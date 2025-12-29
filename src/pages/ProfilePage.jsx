@@ -22,7 +22,7 @@ const ProfilePage = () => {
     const navigate = useNavigate();
     const [showLanguageSelector, setShowLanguageSelector] = useState(false);
     const [showAvatarEditor, setShowAvatarEditor] = useState(false);
-    const [selectedAvatar, setSelectedAvatar] = useState(user?.avatar || '');
+    const [selectedAvatar, setSelectedAvatar] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
 
     const totalPoints = workoutHistory.reduce((acc, w) => acc + (w.points || 0), 0);
@@ -88,7 +88,10 @@ const ProfilePage = () => {
             <div className="text-center py-4">
                 <div className="relative inline-block">
                     <button
-                        onClick={() => setShowAvatarEditor(true)}
+                        onClick={() => {
+                            setSelectedAvatar(user?.avatar || '');
+                            setShowAvatarEditor(true);
+                        }}
                         className="group relative"
                     >
                         {user?.avatar ? (
