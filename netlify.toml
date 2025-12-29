@@ -17,6 +17,11 @@
   to = "/.netlify/functions/auth-login"
   status = 200
 
+[[redirects]]
+  from = "/api/user/profile"
+  to = "/.netlify/functions/user-profile"
+  status = 200
+
 # SPA fallback - all non-API routes go to index.html
 [[redirects]]
   from = "/*"

@@ -90,6 +90,41 @@ export function AuthProvider({ children }) {
         localStorage.setItem('activelife_user', JSON.stringify(updated));
     };
 
+    const updateProfile = async (updates) => {
+        if (!user?.id) {
+            throw new Error('User not logged in');
+        }
+
+        const response = await fetch('/api/user/profile', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: user.id, ...updates }),
+        });
+
+        const text = await response.text();
+        let data;
+        
+        if (!text) {
+            throw new Error(`Update failed with status ${response.status}. Server returned empty response.`);
+        }
+
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            throw new Error(`Invalid response from server: ${text.substring(0, 100)}`);
+        }
+
+        if (!response.ok) {
+            throw new Error(data.message || `Update failed with status ${response.status}`);
+        }
+
+        // Update local user state
+        const updated = { ...user, ...data.data };
+        setUser(updated);
+        localStorage.setItem('activelife_user', JSON.stringify(updated));
+        return data.data;
+    };
+
     return (
         <AuthContext.Provider value={{
             user,
@@ -98,6 +133,7 @@ export function AuthProvider({ children }) {
             register,
             logout,
             updateUser,
+            updateProfile,
             isAuthenticated: !!user
         }}>
             {children}

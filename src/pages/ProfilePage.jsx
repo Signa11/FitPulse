@@ -6,7 +6,9 @@ import {
     HelpCircle,
     LogOut,
     Languages,
-    X
+    X,
+    Camera,
+    User
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useWorkouts } from '../context/WorkoutContext';
@@ -14,11 +16,14 @@ import { useLanguage } from '../context/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, updateProfile } = useAuth();
     const { language, setLanguage, t } = useLanguage();
     const { workoutHistory } = useWorkouts();
     const navigate = useNavigate();
     const [showLanguageSelector, setShowLanguageSelector] = useState(false);
+    const [showAvatarEditor, setShowAvatarEditor] = useState(false);
+    const [selectedAvatar, setSelectedAvatar] = useState(user?.avatar || '');
+    const [isUpdating, setIsUpdating] = useState(false);
 
     const totalPoints = workoutHistory.reduce((acc, w) => acc + (w.points || 0), 0);
 
@@ -32,6 +37,37 @@ const ProfilePage = () => {
     const handleLogout = () => {
         logout();
         navigate('/login');
+    };
+
+    // Avatar options - using DiceBear API with different styles and seeds
+    const avatarOptions = [
+        // Male avatars
+        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'male1'}&style=circle`, label: 'Male 1' },
+        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'male2'}-male2&style=circle`, label: 'Male 2' },
+        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'male3'}-male3&style=circle`, label: 'Male 3' },
+        // Female avatars
+        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'female1'}-female&style=circle`, label: 'Female 1' },
+        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'female2'}-female2&style=circle`, label: 'Female 2' },
+        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'female3'}-female3&style=circle`, label: 'Female 3' },
+        // Neutral/Abstract avatars
+        { url: `https://api.dicebear.com/7.x/bottts/svg?seed=${user?.email || 'bot1'}&style=circle`, label: 'Bot 1' },
+        { url: `https://api.dicebear.com/7.x/bottts/svg?seed=${user?.email || 'bot2'}-bot2&style=circle`, label: 'Bot 2' },
+        { url: `https://api.dicebear.com/7.x/identicon/svg?seed=${user?.email || 'icon1'}&style=circle`, label: 'Icon 1' },
+    ];
+
+    const handleSaveAvatar = async () => {
+        if (!selectedAvatar) return;
+        
+        setIsUpdating(true);
+        try {
+            await updateProfile({ avatar_url: selectedAvatar });
+            setShowAvatarEditor(false);
+        } catch (error) {
+            console.error('Failed to update avatar:', error);
+            alert('Failed to update avatar. Please try again.');
+        } finally {
+            setIsUpdating(false);
+        }
     };
 
     // Generate initials from name
@@ -51,17 +87,25 @@ const ProfilePage = () => {
             {/* Profile Header */}
             <div className="text-center py-4">
                 <div className="relative inline-block">
-                    {user?.avatar ? (
-                        <img
-                            src={user.avatar}
-                            alt={user.name || 'User'}
-                            className="w-24 h-24 rounded-full object-cover ring-4 ring-[#FF6B4A]/20"
-                        />
-                    ) : (
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#FF6B4A] to-[#FF8A6F] flex items-center justify-center ring-4 ring-[#FF6B4A]/20">
-                            <span className="text-white font-bold text-2xl">{getInitials(user?.name)}</span>
+                    <button
+                        onClick={() => setShowAvatarEditor(true)}
+                        className="group relative"
+                    >
+                        {user?.avatar ? (
+                            <img
+                                src={user.avatar}
+                                alt={user.name || 'User'}
+                                className="w-24 h-24 rounded-full object-cover ring-4 ring-[#FF6B4A]/20 transition-opacity group-hover:opacity-80"
+                            />
+                        ) : (
+                            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#FF6B4A] to-[#FF8A6F] flex items-center justify-center ring-4 ring-[#FF6B4A]/20 transition-opacity group-hover:opacity-80">
+                                <span className="text-white font-bold text-2xl">{getInitials(user?.name)}</span>
+                            </div>
+                        )}
+                        <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Camera className="w-6 h-6 text-white" />
                         </div>
-                    )}
+                    </button>
                     <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-r from-[#FF6B4A] to-[#FF8A6F] rounded-full flex items-center justify-center text-white text-sm font-bold ring-4 ring-[#0A0A0B]">
                         {Math.floor(totalPoints / 100) + 1}
                     </div>
@@ -175,6 +219,73 @@ const ProfilePage = () => {
                                         <div className="w-2 h-2 bg-white rounded-full" />
                                     </div>
                                 )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Avatar Editor Modal */}
+            {showAvatarEditor && (
+                <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+                    <div className="bg-[#141416] rounded-2xl p-6 max-w-md w-full border border-white/10">
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-xl font-bold text-white">Change Avatar</h2>
+                            <button
+                                onClick={() => {
+                                    setShowAvatarEditor(false);
+                                    setSelectedAvatar(user?.avatar || '');
+                                }}
+                                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"
+                            >
+                                <X className="w-5 h-5 text-white/60" />
+                            </button>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-4 mb-6 max-h-96 overflow-y-auto">
+                            {avatarOptions.map((avatar, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setSelectedAvatar(avatar.url)}
+                                    className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-all ${
+                                        selectedAvatar === avatar.url
+                                            ? 'border-[#FF6B4A] ring-2 ring-[#FF6B4A]/20'
+                                            : 'border-white/10 hover:border-white/20'
+                                    }`}
+                                >
+                                    <img
+                                        src={avatar.url}
+                                        alt={avatar.label}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    {selectedAvatar === avatar.url && (
+                                        <div className="absolute inset-0 bg-[#FF6B4A]/20 flex items-center justify-center">
+                                            <div className="w-6 h-6 bg-[#FF6B4A] rounded-full flex items-center justify-center">
+                                                <div className="w-2 h-2 bg-white rounded-full" />
+                                            </div>
+                                        </div>
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => {
+                                    setShowAvatarEditor(false);
+                                    setSelectedAvatar(user?.avatar || '');
+                                }}
+                                className="flex-1 py-3 bg-white/10 text-white rounded-xl font-medium hover:bg-white/20 transition-colors"
+                                disabled={isUpdating}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleSaveAvatar}
+                                disabled={isUpdating || !selectedAvatar}
+                                className="flex-1 py-3 bg-gradient-to-r from-[#FF6B4A] to-[#FF8A6F] text-white rounded-xl font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isUpdating ? 'Saving...' : 'Save Avatar'}
                             </button>
                         </div>
                     </div>
