@@ -6,12 +6,16 @@
   NODE_VERSION = "20"
 
 # API Functions - Netlify will automatically detect functions in netlify/functions
-# For now, we'll use redirects to handle API routes
+# Route API calls to Netlify Functions
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  from = "/api/auth/register"
+  to = "/.netlify/functions/auth-register"
   status = 200
-  force = false
+
+[[redirects]]
+  from = "/api/auth/login"
+  to = "/.netlify/functions/auth-login"
+  status = 200
 
 # SPA fallback - all non-API routes go to index.html
 [[redirects]]
