@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPulse Icon Generator</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #0A0A0B;
+            color: white;
+        }
+        .container {
+            background: #141416;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 { color: #FF6B4A; }
+        .icon-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .icon-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+        canvas {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: white;
+        }
+        button {
+            background: linear-gradient(135deg, #FF6B4A, #FF8A6F);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 5px;
+        }
+        button:hover { opacity: 0.9; }
+        .instructions {
+            background: rgba(255, 107, 74, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 3px solid #FF6B4A;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 FitPulse Icon Generator</h1>
+        <p>This tool generates PNG icons from the SVG favicon for PWA support.</p>
+        
+        <div class="instructions">
+            <strong>Instructions:</strong>
+            <ol>
+                <li>Click "Generate Icons" below</li>
+                <li>Right-click each icon preview and "Save image as..."</li>
+                <li>Save them in the <code>public/</code> directory with the correct names</li>
+            </ol>
+        </div>
+
+        <button onclick="generateIcons()">Generate All Icons</button>
+        
+        <div class="icon-preview" id="preview"></div>
+    </div>
+
+    <script>
+        const sizes = [
+            { name: 'favicon-16x16.png', size: 16 },
+            { name: 'favicon-32x32.png', size: 32 },
+            { name: 'apple-touch-icon.png', size: 180 },
+            { name: 'icon-192.png', size: 192 },
+            { name: 'icon-512.png', size: 512 },
+        ];
+
+        function generateIcons() {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
+
+            sizes.forEach(({ name, size }) => {
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+
+                // Create the FitPulse logo
+                const center = size / 2;
+                const radius = size * 0.45;
+
+                // Background gradient
+                const bgGradient = ctx.createLinearGradient(0, 0, size, size);
+                bgGradient.addColorStop(0, '#FF6B4A');
+                bgGradient.addColorStop(1, '#FF8A6F');
+                ctx.fillStyle = bgGradient;
+                ctx.beginPath();
+                ctx.arc(center, center, radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Pulse waves
+                const pulseGradient = ctx.createLinearGradient(0, 0, size, size);
+                pulseGradient.addColorStop(0, '#4FACFE');
+                pulseGradient.addColorStop(1, '#00F2FE');
+                ctx.strokeStyle = pulseGradient;
+                ctx.lineWidth = size * 0.03;
+
+                // Outer pulse
+                ctx.globalAlpha = 0.6;
+                ctx.beginPath();
+                ctx.arc(center, center, radius * 0.73, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Inner pulse
+                ctx.globalAlpha = 0.8;
+                ctx.beginPath();
+                ctx.arc(center, center, radius * 0.6, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+
+                // Heart icon (simplified)
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                const heartSize = size * 0.15;
+                ctx.moveTo(center, center - heartSize * 0.3);
+                ctx.bezierCurveTo(center, center - heartSize * 0.5, center - heartSize * 0.4, center - heartSize * 0.5, center - heartSize * 0.4, center - heartSize * 0.2);
+                ctx.bezierCurveTo(center - heartSize * 0.4, center, center, center + heartSize * 0.3, center, center + heartSize * 0.5);
+                ctx.bezierCurveTo(center, center + heartSize * 0.3, center + heartSize * 0.4, center, center + heartSize * 0.4, center - heartSize * 0.2);
+                ctx.bezierCurveTo(center + heartSize * 0.4, center - heartSize * 0.5, center, center - heartSize * 0.5, center, center - heartSize * 0.3);
+                ctx.fill();
+
+                // Pulse lines
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = size * 0.03;
+                ctx.globalAlpha = 0.9;
+                const lineY = center;
+                const spacing = size * 0.08;
+                ctx.beginPath();
+                for (let i = -3; i <= 3; i++) {
+                    const x = center + (i * spacing);
+                    const y = lineY - (Math.abs(i) % 2 === 0 ? spacing * 0.5 : -spacing * 0.5);
+                    if (i === -3) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+
+                // Create download link
+                const item = document.createElement('div');
+                item.className = 'icon-item';
+                item.innerHTML = `
+                    <canvas width="${size}" height="${size}"></canvas>
+                    <p style="margin-top: 10px; font-size: 12px;">${name}</p>
+                    <button onclick="downloadIcon(this, '${name}', ${size})" style="margin-top: 5px; font-size: 11px; padding: 6px 12px;">Download</button>
+                `;
+                
+                // Copy canvas to preview
+                const previewCanvas = item.querySelector('canvas');
+                const previewCtx = previewCanvas.getContext('2d');
+                previewCtx.drawImage(canvas, 0, 0);
+                
+                // Store canvas data
+                previewCanvas.dataset.name = name;
+                previewCanvas.dataset.size = size;
+                
+                preview.appendChild(item);
+            });
+        }
+
+        function downloadIcon(button, filename, size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Recreate the icon (same code as above)
+            const center = size / 2;
+            const radius = size * 0.45;
+
+            const bgGradient = ctx.createLinearGradient(0, 0, size, size);
+            bgGradient.addColorStop(0, '#FF6B4A');
+            bgGradient.addColorStop(1, '#FF8A6F');
+            ctx.fillStyle = bgGradient;
+            ctx.beginPath();
+            ctx.arc(center, center, radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            const pulseGradient = ctx.createLinearGradient(0, 0, size, size);
+            pulseGradient.addColorStop(0, '#4FACFE');
+            pulseGradient.addColorStop(1, '#00F2FE');
+            ctx.strokeStyle = pulseGradient;
+            ctx.lineWidth = size * 0.03;
+
+            ctx.globalAlpha = 0.6;
+            ctx.beginPath();
+            ctx.arc(center, center, radius * 0.73, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.globalAlpha = 0.8;
+            ctx.beginPath();
+            ctx.arc(center, center, radius * 0.6, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            const heartSize = size * 0.15;
+            ctx.moveTo(center, center - heartSize * 0.3);
+            ctx.bezierCurveTo(center, center - heartSize * 0.5, center - heartSize * 0.4, center - heartSize * 0.5, center - heartSize * 0.4, center - heartSize * 0.2);
+            ctx.bezierCurveTo(center - heartSize * 0.4, center, center, center + heartSize * 0.3, center, center + heartSize * 0.5);
+            ctx.bezierCurveTo(center, center + heartSize * 0.3, center + heartSize * 0.4, center, center + heartSize * 0.4, center - heartSize * 0.2);
+            ctx.bezierCurveTo(center + heartSize * 0.4, center - heartSize * 0.5, center, center - heartSize * 0.5, center, center - heartSize * 0.3);
+            ctx.fill();
+
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = size * 0.03;
+            ctx.globalAlpha = 0.9;
+            const lineY = center;
+            const spacing = size * 0.08;
+            ctx.beginPath();
+            for (let i = -3; i <= 3; i++) {
+                const x = center + (i * spacing);
+                const y = lineY - (Math.abs(i) % 2 === 0 ? spacing * 0.5 : -spacing * 0.5);
+                if (i === -3) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Download
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+    </script>
+</body>
+</html>
+
