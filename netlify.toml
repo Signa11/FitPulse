@@ -3,7 +3,7 @@
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
 # API Functions - Netlify will automatically detect functions in netlify/functions
 # For now, we'll use redirects to handle API routes
