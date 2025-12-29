@@ -1,0 +1,20 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# API Functions - Netlify will automatically detect functions in netlify/functions
+# For now, we'll use redirects to handle API routes
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = false
+
+# SPA fallback - all non-API routes go to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
