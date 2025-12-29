@@ -42,17 +42,17 @@ const ProfilePage = () => {
     // Avatar options - using DiceBear API with different styles and seeds
     const avatarOptions = [
         // Male avatars
-        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'male1'}&style=circle`, label: 'Male 1' },
-        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'male2'}-male2&style=circle`, label: 'Male 2' },
-        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'male3'}-male3&style=circle`, label: 'Male 3' },
+        { url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=male1&style=circle', label: 'Male 1' },
+        { url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=male2&style=circle', label: 'Male 2' },
+        { url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=male3&style=circle', label: 'Male 3' },
         // Female avatars
-        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'female1'}-female&style=circle`, label: 'Female 1' },
-        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'female2'}-female2&style=circle`, label: 'Female 2' },
-        { url: `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.email || 'female3'}-female3&style=circle`, label: 'Female 3' },
+        { url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=female1&style=circle', label: 'Female 1' },
+        { url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=female2&style=circle', label: 'Female 2' },
+        { url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=female3&style=circle', label: 'Female 3' },
         // Neutral/Abstract avatars
-        { url: `https://api.dicebear.com/7.x/bottts/svg?seed=${user?.email || 'bot1'}&style=circle`, label: 'Bot 1' },
-        { url: `https://api.dicebear.com/7.x/bottts/svg?seed=${user?.email || 'bot2'}-bot2&style=circle`, label: 'Bot 2' },
-        { url: `https://api.dicebear.com/7.x/identicon/svg?seed=${user?.email || 'icon1'}&style=circle`, label: 'Icon 1' },
+        { url: 'https://api.dicebear.com/7.x/bottts/svg?seed=bot1&style=circle', label: 'Bot 1' },
+        { url: 'https://api.dicebear.com/7.x/bottts/svg?seed=bot2&style=circle', label: 'Bot 2' },
+        { url: 'https://api.dicebear.com/7.x/identicon/svg?seed=icon1&style=circle', label: 'Icon 1' },
     ];
 
     const handleSaveAvatar = async () => {
