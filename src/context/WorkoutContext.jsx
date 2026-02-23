@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const WorkoutContext = createContext(null);
 
-const STORAGE_KEY = 'activelife_workouts';
+const STORAGE_KEY = 'movelab_fitpulse_workouts';
 
 export const WorkoutProvider = ({ children }) => {
     const [workoutHistory, setWorkoutHistory] = useState([]);

@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/ui/Button';
-import Logo from '../components/ui/Logo';
 
 const RegisterPage = () => {
     const navigate = useNavigate();
@@ -66,15 +65,17 @@ const RegisterPage = () => {
     return (
         <div className="min-h-screen bg-[#0A0A0B] flex flex-col relative overflow-hidden">
             {/* Background glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#FF6B4A]/10 rounded-full blur-3xl" />
-            
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
+
             {/* Header */}
             <div className="relative p-6 text-center pt-12">
                 <div className="inline-flex items-center justify-center mb-4">
-                    <Logo size={64} />
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FF6B4A] via-[#7C3AED] to-[#4FACFE] flex items-center justify-center">
+                        <span className="text-3xl font-black text-white">M</span>
+                    </div>
                 </div>
                 <h1 className="text-2xl font-bold text-white">Create Account</h1>
-                <p className="text-white/40 mt-1">Join the FitPulse community</p>
+                <p className="text-white/40 mt-1">Join MoveLab</p>
             </div>
 
             {/* Form */}
@@ -91,7 +92,7 @@ const RegisterPage = () => {
                                 value={formData.name}
                                 onChange={handleChange}
                                 placeholder="Enter your name"
-                                className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#FF6B4A] focus:border-transparent transition-all"
+                                className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition-all"
                             />
                         </div>
                     </div>
@@ -107,7 +108,7 @@ const RegisterPage = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="you@example.com"
-                                className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#FF6B4A] focus:border-transparent transition-all"
+                                className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition-all"
                             />
                         </div>
                     </div>
@@ -123,7 +124,7 @@ const RegisterPage = () => {
                                 value={formData.password}
                                 onChange={handleChange}
                                 placeholder="At least 6 characters"
-                                className="w-full pl-12 pr-12 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#FF6B4A] focus:border-transparent transition-all"
+                                className="w-full pl-12 pr-12 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition-all"
                             />
                             <button
                                 type="button"
@@ -146,7 +147,7 @@ const RegisterPage = () => {
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
                                 placeholder="Confirm your password"
-                                className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#FF6B4A] focus:border-transparent transition-all"
+                                className="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition-all"
                             />
                         </div>
                     </div>
@@ -203,7 +204,7 @@ const RegisterPage = () => {
                 {/* Login Link */}
                 <p className="text-center mt-8 text-white/50">
                     Already have an account?{' '}
-                    <Link to="/login" className="font-semibold text-[#FF6B4A] hover:underline">
+                    <Link to="/login" className="font-semibold text-white hover:underline">
                         Sign In
                     </Link>
                 </p>

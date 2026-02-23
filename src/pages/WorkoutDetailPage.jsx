@@ -669,7 +669,7 @@ const WorkoutDetailPage = () => {
                             <Button 
                                 variant="primary" 
                                 fullWidth 
-                                onClick={() => navigate('/')}
+                                onClick={() => navigate('/fitpulse')}
                             >
                                 Done
                             </Button>

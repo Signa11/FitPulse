@@ -82,7 +82,7 @@ const WorkoutsPage = () => {
                     filteredWorkouts.map(workout => (
                         <div
                             key={workout.id}
-                            onClick={() => navigate(`/workout/${workout.id}`)}
+                            onClick={() => navigate(`/fitpulse/workout/${workout.id}`)}
                             className="bg-[#141416] rounded-2xl border border-white/5 overflow-hidden cursor-pointer hover:border-white/10 hover:bg-[#1C1C1E] transition-all"
                         >
                             <div className="flex">

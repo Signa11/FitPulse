@@ -1,107 +1,61 @@
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { WorkoutProvider } from './context/WorkoutContext';
-import { LanguageProvider } from './context/LanguageContext';
-import TopBar from './components/layout/TopBar';
-import BottomNav from './components/layout/BottomNav';
-import HomePage from './pages/HomePage';
-import WorkoutsPage from './pages/WorkoutsPage';
-import ProfilePage from './pages/ProfilePage';
-import WorkoutDetailPage from './pages/WorkoutDetailPage';
+import { ThemeProvider } from './context/ThemeContext';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import AppSelectorPage from './pages/AppSelectorPage';
 
-// Protected Route wrapper
+const FitPulseApp = lazy(() => import('./apps/fitpulse/FitPulseApp'));
+const NathaFitApp = lazy(() => import('./apps/nathafit/NathaFitApp'));
+const RunLabApp = lazy(() => import('./apps/runlab/RunLabApp'));
+
+function LoadingSpinner() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#0A0A0B]">
+      <div className="text-center">
+        <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-white/40">Loading...</p>
+      </div>
+    </div>
+  );
+}
+
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0A0A0B]">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-[#FF6B4A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white/40">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
+  if (loading) return <LoadingSpinner />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
   return children;
 }
 
-// Public Route wrapper (redirects to home if already logged in)
 function PublicRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0A0A0B]">
-        <div className="w-12 h-12 border-4 border-[#FF6B4A] border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
-
-  if (isAuthenticated) {
-    return <Navigate to="/" replace />;
-  }
-
+  if (loading) return <LoadingSpinner />;
+  if (isAuthenticated) return <Navigate to="/" replace />;
   return children;
 }
 
 function AppContent() {
-  const location = useLocation();
-  const { isAuthenticated } = useAuth();
-
-  const isDetailPage = location.pathname.includes('/workout/');
-  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
-
   return (
     <div className="min-h-screen bg-[#0A0A0B]">
-      {!isDetailPage && !isAuthPage && isAuthenticated && <TopBar />}
-
-      <main className={`${isDetailPage || isAuthPage ? '' : 'top-safe-area bottom-safe-area'}`}>
+      <Suspense fallback={<LoadingSpinner />}>
         <Routes>
-          {/* Public Auth Routes */}
-          <Route path="/login" element={
-            <PublicRoute>
-              <LoginPage />
-            </PublicRoute>
-          } />
-          <Route path="/register" element={
-            <PublicRoute>
-              <RegisterPage />
-            </PublicRoute>
-          } />
+          {/* Public auth routes */}
+          <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+          <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
 
-          {/* Protected Routes */}
-          <Route path="/" element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          } />
-          <Route path="/workouts" element={
-            <ProtectedRoute>
-              <WorkoutsPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          } />
-          <Route path="/workout/:id" element={
-            <ProtectedRoute>
-              <WorkoutDetailPage />
-            </ProtectedRoute>
-          } />
+          {/* App selector (protected) */}
+          <Route path="/" element={<ProtectedRoute><AppSelectorPage /></ProtectedRoute>} />
+
+          {/* App sub-routes (protected) */}
+          <Route path="/fitpulse/*" element={<ProtectedRoute><FitPulseApp /></ProtectedRoute>} />
+          <Route path="/nathafit/*" element={<ProtectedRoute><NathaFitApp /></ProtectedRoute>} />
+          <Route path="/runlab/*" element={<ProtectedRoute><RunLabApp /></ProtectedRoute>} />
+
+          {/* Catch-all */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </main>
-
-      {!isDetailPage && !isAuthPage && isAuthenticated && <BottomNav />}
+      </Suspense>
     </div>
   );
 }
@@ -109,11 +63,9 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <WorkoutProvider>
-        <LanguageProvider>
-          <AppContent />
-        </LanguageProvider>
-      </WorkoutProvider>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
     </AuthProvider>
   );
 }

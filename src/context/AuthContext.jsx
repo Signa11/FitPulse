@@ -8,12 +8,12 @@ export function AuthProvider({ children }) {
 
     // Check for existing session on mount
     useEffect(() => {
-        const storedUser = localStorage.getItem('activelife_user');
+        const storedUser = localStorage.getItem('movelab_user');
         if (storedUser) {
             try {
                 setUser(JSON.parse(storedUser));
             } catch (e) {
-                localStorage.removeItem('activelife_user');
+                localStorage.removeItem('movelab_user');
             }
         }
         setLoading(false);
@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
         }
 
         setUser(data.data);
-        localStorage.setItem('activelife_user', JSON.stringify(data.data));
+        localStorage.setItem('movelab_user', JSON.stringify(data.data));
         return data.data;
     };
 
@@ -75,19 +75,19 @@ export function AuthProvider({ children }) {
         }
 
         setUser(data.data);
-        localStorage.setItem('activelife_user', JSON.stringify(data.data));
+        localStorage.setItem('movelab_user', JSON.stringify(data.data));
         return data.data;
     };
 
     const logout = () => {
         setUser(null);
-        localStorage.removeItem('activelife_user');
+        localStorage.removeItem('movelab_user');
     };
 
     const updateUser = (updates) => {
         const updated = { ...user, ...updates };
         setUser(updated);
-        localStorage.setItem('activelife_user', JSON.stringify(updated));
+        localStorage.setItem('movelab_user', JSON.stringify(updated));
     };
 
     const updateProfile = async (updates) => {
@@ -121,7 +121,7 @@ export function AuthProvider({ children }) {
         // Update local user state
         const updated = { ...user, ...data.data };
         setUser(updated);
-        localStorage.setItem('activelife_user', JSON.stringify(updated));
+        localStorage.setItem('movelab_user', JSON.stringify(updated));
         return data.data;
     };
 

@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const LanguageContext = createContext(null);
 
-const STORAGE_KEY = 'activelife_language';
+const STORAGE_KEY = 'movelab_language';
 
 const translations = {
     en: {

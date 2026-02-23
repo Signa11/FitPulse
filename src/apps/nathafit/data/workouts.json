@@ -1,0 +1,1710 @@
+{
+  "program": {
+    "name": "Bikini Body Guide (BBG)",
+    "author": "Kayla Itsines",
+    "description": "12-week resistance training program with 4 weeks pre-training",
+    "workoutStructure": {
+      "circuitsPerWorkout": 2,
+      "exercisesPerCircuit": 4,
+      "circuitDuration": "7 minutes",
+      "circuitRepetitions": 2,
+      "restBetweenCircuits": "30-90 seconds",
+      "order": ["Warm Up", "Circuit 1", "Break", "Circuit 2", "Break", "Circuit 1", "Break", "Circuit 2", "Cool Down & Stretch"]
+    }
+  },
+  "phases": [
+    {
+      "id": "pre-training",
+      "name": "Pre-Training",
+      "weeks": "1-4",
+      "optional": true,
+      "description": "Optional 4-week on-ramp for beginners, those new to resistance training, or returning to exercise after a break (including post-pregnancy with doctor's clearance).",
+      "detail": "Simpler exercises (e.g. knee push-ups instead of full push-ups), lower volume, and no heavy weights. Builds a foundation so you're ready for the main programme.",
+      "weeklySchedule": {
+        "resistance": "2-3 sessions",
+        "lissCardio": "1-2 sessions (weeks 1-2), 2-3 sessions (weeks 3-4)",
+        "rehabilitation": "1 session"
+      }
+    },
+    {
+      "id": "training-1",
+      "name": "Weeks 1–4",
+      "weeks": "1-4",
+      "optional": false,
+      "description": "Foundation block. Introduces weighted exercises and compound movements. Progressive overload starts here.",
+      "detail": "You'll start using dumbbells (3-6 kg) and a medicine ball (6-12 kg). The intensity increases compared to pre-training with more challenging variations.",
+      "weeklySchedule": {
+        "resistance": "2-3 sessions",
+        "lissCardio": "2-3 sessions",
+        "rehabilitation": "1 session"
+      }
+    },
+    {
+      "id": "training-2",
+      "name": "Weeks 5–8",
+      "weeks": "5-8",
+      "optional": false,
+      "description": "Intermediate block. Harder exercise variations, heavier weights, and more cardio sessions per week.",
+      "detail": "New exercises like decline push-ups, weighted sumo squats on bench (10-15 kg), and combo moves. Cardio increases to 3-4 LISS sessions per week.",
+      "weeklySchedule": {
+        "resistance": "2-3 sessions",
+        "lissCardio": "3-4 sessions",
+        "rehabilitation": "1 session"
+      }
+    },
+    {
+      "id": "training-3",
+      "name": "Weeks 9–12",
+      "weeks": "9-12",
+      "optional": false,
+      "description": "Advanced block. Maximum intensity with plyometrics, complex combos, and HIIT cardio added.",
+      "detail": "Includes bench jumps, burpee combos, spider push-ups, and bosu exercises. HIIT cardio (1-2 sessions) is added alongside LISS. This is the final push.",
+      "weeklySchedule": {
+        "resistance": "3-4 sessions",
+        "lissCardio": "2-3 sessions",
+        "hiitCardio": "1-2 sessions",
+        "rehabilitation": "1-2 sessions"
+      }
+    }
+  ],
+  "workouts": [
+    {
+      "id": "pt-w1-mon",
+      "phase": "pre-training",
+      "week": 1,
+      "day": "Monday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Squats", "reps": 15, "type": "reps" },
+            { "name": "Stationary Lunges", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Skipping", "reps": 50, "type": "reps" },
+            { "name": "Knee Ups", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Walking Lunges", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Sumo Squats", "reps": 15, "type": "reps" },
+            { "name": "Step Ups", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Mountain Climbers", "reps": 50, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pt-w1-wed",
+      "phase": "pre-training",
+      "week": 1,
+      "day": "Wednesday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Push Ups (On Knees)", "reps": 15, "type": "reps" },
+            { "name": "Straight Leg Raises", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Toe Taps", "reps": 15, "type": "reps" },
+            { "name": "Plank", "duration": 30, "type": "time" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Lay Down Push Ups (On Knees)", "reps": 15, "type": "reps" },
+            { "name": "Straight Leg Sit Ups", "reps": 15, "type": "reps" },
+            { "name": "Tricep Dips", "reps": 15, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 30, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pt-w1-fri",
+      "phase": "pre-training",
+      "week": 1,
+      "day": "Friday",
+      "focus": "Full Body",
+      "optional": true,
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Squats", "reps": 20, "type": "reps" },
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Tricep Dips", "reps": 20, "type": "reps" },
+            { "name": "Straight Leg Sit Ups", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Toe Taps", "reps": 20, "type": "reps" },
+            { "name": "Lay Down Push Ups (On Knees)", "reps": 15, "type": "reps" },
+            { "name": "Step Ups", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Mountain Climbers", "reps": 50, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pt-w2-mon",
+      "phase": "pre-training",
+      "week": 2,
+      "day": "Monday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Squats", "reps": 15, "type": "reps" },
+            { "name": "Stationary Lunges", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Skipping", "reps": 50, "type": "reps" },
+            { "name": "Knee Ups", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Walking Lunges", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Sumo Squats", "reps": 15, "type": "reps" },
+            { "name": "Step Ups", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Mountain Climbers", "reps": 50, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pt-w2-wed",
+      "phase": "pre-training",
+      "week": 2,
+      "day": "Wednesday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Push Ups (On Knees)", "reps": 15, "type": "reps" },
+            { "name": "Straight Leg Raises", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Toe Taps", "reps": 15, "type": "reps" },
+            { "name": "Plank", "duration": 30, "type": "time" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Lay Down Push Ups (On Knees)", "reps": 15, "type": "reps" },
+            { "name": "Straight Leg Sit Ups", "reps": 15, "type": "reps" },
+            { "name": "Tricep Dips", "reps": 15, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 30, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pt-w2-fri",
+      "phase": "pre-training",
+      "week": 2,
+      "day": "Friday",
+      "focus": "Full Body",
+      "optional": true,
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Squats", "reps": 20, "type": "reps" },
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Tricep Dips", "reps": 20, "type": "reps" },
+            { "name": "Straight Leg Sit Ups", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Toe Taps", "reps": 20, "type": "reps" },
+            { "name": "Lay Down Push Ups (On Knees)", "reps": 15, "type": "reps" },
+            { "name": "Step Ups", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Mountain Climbers", "reps": 50, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pt-w3-mon",
+      "phase": "pre-training",
+      "week": 3,
+      "day": "Monday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Medicine Ball Squat and Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Knee Ups", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Skipping", "reps": 50, "type": "reps" },
+            { "name": "Stationary Lunges", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Jump Squats", "reps": 15, "type": "reps" },
+            { "name": "Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Weighted Step Ups", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pt-w3-wed",
+      "phase": "pre-training",
+      "week": 3,
+      "day": "Wednesday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Straight Leg Sit Ups", "reps": 15, "type": "reps" },
+            { "name": "Tricep Dips", "reps": 15, "type": "reps" },
+            { "name": "Straight Leg Raises", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Mountain Climbers (4) + Push Ups (1)", "reps": 15, "type": "reps" },
+            { "name": "Toe Taps", "reps": 20, "type": "reps" },
+            { "name": "Lay Down Push Ups (On Knees)", "reps": 15, "type": "reps" },
+            { "name": "Commandos", "reps": 20, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pt-w3-fri",
+      "phase": "pre-training",
+      "week": 3,
+      "day": "Friday",
+      "focus": "Full Body",
+      "optional": true,
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Medicine Ball Squat Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Toe Taps", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Jump Lunges", "reps": 20, "perSide": true, "type": "reps" },
+            { "name": "Sumo Squats", "reps": 15, "type": "reps" },
+            { "name": "Skipping", "reps": 50, "type": "reps" },
+            { "name": "Straight Leg Sit Ups", "reps": 20, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pt-w4-mon",
+      "phase": "pre-training",
+      "week": 4,
+      "day": "Monday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Medicine Ball Squat and Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Knee Ups", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Skipping", "reps": 50, "type": "reps" },
+            { "name": "Stationary Lunges", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Jump Squats", "reps": 15, "type": "reps" },
+            { "name": "Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Weighted Step Ups", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pt-w4-wed",
+      "phase": "pre-training",
+      "week": 4,
+      "day": "Wednesday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Straight Leg Sit Ups", "reps": 15, "type": "reps" },
+            { "name": "Tricep Dips", "reps": 15, "type": "reps" },
+            { "name": "Straight Leg Raises", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Mountain Climbers (4) + Push Ups (1)", "reps": 15, "type": "reps" },
+            { "name": "Toe Taps", "reps": 20, "type": "reps" },
+            { "name": "Lay Down Push Ups (On Knees)", "reps": 15, "type": "reps" },
+            { "name": "Commandos", "reps": 20, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pt-w4-fri",
+      "phase": "pre-training",
+      "week": 4,
+      "day": "Friday",
+      "focus": "Full Body",
+      "optional": true,
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Medicine Ball Squat Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Toe Taps", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Jump Lunges", "reps": 20, "perSide": true, "type": "reps" },
+            { "name": "Sumo Squats", "reps": 15, "type": "reps" },
+            { "name": "Skipping", "reps": 50, "type": "reps" },
+            { "name": "Straight Leg Sit Ups", "reps": 20, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w1-mon",
+      "phase": "training-1",
+      "week": 1,
+      "day": "Monday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Jump Squats", "reps": 15, "type": "reps" },
+            { "name": "Squats", "reps": 15, "type": "reps" },
+            { "name": "Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Knee Ups", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "X Jumps", "reps": 16, "perSide": true, "type": "reps" },
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Weighted Step Ups", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Medicine Ball Squat & Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w1-wed",
+      "phase": "training-1",
+      "week": 1,
+      "day": "Wednesday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Medicine Ball Squat & Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Lay Down Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Tricep Dips", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Mountain Climbers", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Straight Leg Sit Ups + Twist", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Straight Leg Sit Ups", "reps": 15, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w1-fri",
+      "phase": "training-1",
+      "week": 1,
+      "day": "Friday",
+      "focus": "Full Body",
+      "optional": true,
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Medicine Ball Squat & Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Knee Ups", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Straight Leg Sit Ups", "reps": 15, "type": "reps" },
+            { "name": "Weighted Step Ups", "reps": 30, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Push Ups", "reps": 15, "type": "reps", "hasRegression": true }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w2-mon",
+      "phase": "training-1",
+      "week": 2,
+      "day": "Monday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Jump Lunges", "reps": 20, "perSide": true, "type": "reps" },
+            { "name": "Knee Ups", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Sumo Squats", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Skipping", "reps": 100, "type": "reps" },
+            { "name": "Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Reverse Lunge + Knee Lift", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Jump Squats", "reps": 15, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w2-wed",
+      "phase": "training-1",
+      "week": 2,
+      "day": "Wednesday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Dumbbell Squat & Press", "reps": 15, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Tricep Dips", "reps": 15, "type": "reps" },
+            { "name": "Commandos", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 20, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Bent Leg Sit Ups", "reps": 20, "type": "reps" },
+            { "name": "Mountain Climbers (4) + Push Ups (1)", "reps": 15, "type": "reps" },
+            { "name": "Straight Leg Raises", "reps": 15, "type": "reps" },
+            { "name": "Lay Down Push Ups", "reps": 15, "type": "reps", "hasRegression": true }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w2-fri",
+      "phase": "training-1",
+      "week": 2,
+      "day": "Friday",
+      "focus": "Full Body",
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Jump Lunges", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Lay Down Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Sumo Squats", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Mountain Climbers (4) + Push Ups (1)", "reps": 15, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 15, "type": "reps" },
+            { "name": "Skipping", "reps": 100, "type": "reps" },
+            { "name": "Commandos", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w3-mon",
+      "phase": "training-1",
+      "week": 3,
+      "day": "Monday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Jump Squats", "reps": 15, "type": "reps" },
+            { "name": "Squats", "reps": 15, "type": "reps" },
+            { "name": "Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Knee Ups", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "X Jumps", "reps": 16, "perSide": true, "type": "reps" },
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Weighted Step Ups", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Medicine Ball Squat & Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w3-wed",
+      "phase": "training-1",
+      "week": 3,
+      "day": "Wednesday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Medicine Ball Squat & Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Lay Down Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Tricep Dips", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Mountain Climbers", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Straight Leg Sit Ups + Twist", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Straight Leg Sit Ups", "reps": 15, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w3-fri",
+      "phase": "training-1",
+      "week": 3,
+      "day": "Friday",
+      "focus": "Full Body",
+      "optional": true,
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Medicine Ball Squat & Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Knee Ups", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Straight Leg Sit Ups", "reps": 15, "type": "reps" },
+            { "name": "Weighted Step Ups", "reps": 30, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Push Ups", "reps": 15, "type": "reps", "hasRegression": true }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w4-mon",
+      "phase": "training-1",
+      "week": 4,
+      "day": "Monday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Jump Lunges", "reps": 20, "perSide": true, "type": "reps" },
+            { "name": "Knee Ups", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Sumo Squats", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Skipping", "reps": 100, "type": "reps" },
+            { "name": "Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Reverse Lunge + Knee Lift", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Jump Squats", "reps": 15, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w4-wed",
+      "phase": "training-1",
+      "week": 4,
+      "day": "Wednesday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Dumbbell Squat & Press", "reps": 15, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Tricep Dips", "reps": 15, "type": "reps" },
+            { "name": "Commandos", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 20, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Bent Leg Sit Ups", "reps": 20, "type": "reps" },
+            { "name": "Mountain Climbers (4) + Push Ups (1)", "reps": 15, "type": "reps" },
+            { "name": "Straight Leg Raises", "reps": 15, "type": "reps" },
+            { "name": "Lay Down Push Ups", "reps": 15, "type": "reps", "hasRegression": true }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w4-fri",
+      "phase": "training-1",
+      "week": 4,
+      "day": "Friday",
+      "focus": "Full Body",
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpees", "reps": 10, "type": "reps" },
+            { "name": "Jump Lunges", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Lay Down Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Sumo Squats", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Mountain Climbers (4) + Push Ups (1)", "reps": 15, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 15, "type": "reps" },
+            { "name": "Skipping", "reps": 100, "type": "reps" },
+            { "name": "Commandos", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w5-mon",
+      "phase": "training-2",
+      "week": 5,
+      "day": "Monday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Sumo Jump Squats", "reps": 15, "type": "reps" },
+            { "name": "Weighted Sumo Squats (On Bench)", "reps": 15, "type": "reps", "hasRegression": true, "equipment": "dumbbell", "weight": "10-15 kg" },
+            { "name": "Burpees", "reps": 15, "type": "reps" },
+            { "name": "Weighted Step Ups", "reps": 30, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Jump Lunges", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Medicine Ball Crab Walk", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Weighted Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Skipping", "reps": 100, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w5-wed",
+      "phase": "training-2",
+      "week": 5,
+      "day": "Wednesday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Mountain Climbers (10) + Push Ups (2)", "reps": 8, "type": "reps" },
+            { "name": "Straight Leg Raises + Hip Lift", "reps": 15, "type": "reps" },
+            { "name": "Lay Down Push Ups", "reps": 15, "type": "reps" },
+            { "name": "Weighted Bent Leg Jackknifes", "reps": 15, "type": "reps", "hasRegression": true, "equipment": "dumbbell", "weight": "3-6 kg" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Dumbbell Squat & Press", "reps": 15, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Decline Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Tricep Dips (Feet Raised)", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Commandos", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w5-fri",
+      "phase": "training-2",
+      "week": 5,
+      "day": "Friday",
+      "focus": "Full Body",
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Mountain Climbers", "reps": 50, "perSide": true, "type": "reps" },
+            { "name": "Weighted Bent Leg Jackknifes", "reps": 15, "type": "reps", "hasRegression": true, "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Skipping", "reps": 100, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpees", "reps": 15, "type": "reps" },
+            { "name": "Raised Leg Sit Ups + Twist", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Straight Leg Raises", "reps": 15, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w6-mon",
+      "phase": "training-2",
+      "week": 6,
+      "day": "Monday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Drop Push Ups", "reps": 15, "type": "reps" },
+            { "name": "Plank", "duration": 60, "type": "time" },
+            { "name": "Tricep Dips (Feet Raised)", "reps": 20, "type": "reps", "hasRegression": true },
+            { "name": "Bent Leg Raises + Hip Lift", "reps": 25, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Dumbbell Squat & Press", "reps": 15, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Straight Leg Raises + Hip Lift", "reps": 15, "type": "reps" },
+            { "name": "Raised Leg Sit Ups + Twist", "reps": 20, "perSide": true, "type": "reps" },
+            { "name": "Straight Leg Raises", "reps": 20, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w6-wed",
+      "phase": "training-2",
+      "week": 6,
+      "day": "Wednesday",
+      "focus": "Abs & Cardio",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Snap Jumps", "reps": 20, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 20, "type": "reps" },
+            { "name": "Skipping", "reps": 100, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 40, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpees", "reps": 15, "type": "reps" },
+            { "name": "Mountain Climbers", "reps": 50, "perSide": true, "type": "reps" },
+            { "name": "Scissor Kicks", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "X Jumps", "reps": 20, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w6-fri",
+      "phase": "training-2",
+      "week": 6,
+      "day": "Friday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "X Jumps", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Weighted Step Ups", "reps": 30, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Jump Lunges", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Tuck Jumps", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Sumo Jump Squats", "reps": 15, "type": "reps" },
+            { "name": "Split Squats", "reps": 15, "type": "reps" },
+            { "name": "Weighted Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Broad Jump Burpees", "reps": 15, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w7-mon",
+      "phase": "training-2",
+      "week": 7,
+      "day": "Monday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Sumo Jump Squats", "reps": 15, "type": "reps" },
+            { "name": "Weighted Sumo Squats (On Bench)", "reps": 15, "type": "reps", "hasRegression": true, "equipment": "dumbbell", "weight": "10-15 kg" },
+            { "name": "Burpees", "reps": 15, "type": "reps" },
+            { "name": "Weighted Step Ups", "reps": 30, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Jump Lunges", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Medicine Ball Crab Walk", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Weighted Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Skipping", "reps": 100, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w7-wed",
+      "phase": "training-2",
+      "week": 7,
+      "day": "Wednesday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Mountain Climbers (10) + Push Ups (2)", "reps": 8, "type": "reps" },
+            { "name": "Straight Leg Raises + Hip Lift", "reps": 15, "type": "reps" },
+            { "name": "Lay Down Push Ups", "reps": 15, "type": "reps" },
+            { "name": "Weighted Bent Leg Jackknifes", "reps": 15, "type": "reps", "hasRegression": true, "equipment": "dumbbell", "weight": "3-6 kg" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Dumbbell Squat & Press", "reps": 15, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Decline Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Tricep Dips (Feet Raised)", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Commandos", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w7-fri",
+      "phase": "training-2",
+      "week": 7,
+      "day": "Friday",
+      "focus": "Full Body",
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Mountain Climbers", "reps": 50, "perSide": true, "type": "reps" },
+            { "name": "Weighted Bent Leg Jackknifes", "reps": 15, "type": "reps", "hasRegression": true, "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Skipping", "reps": 100, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpees", "reps": 15, "type": "reps" },
+            { "name": "Raised Leg Sit Ups + Twist", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Straight Leg Raises", "reps": 15, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w8-mon",
+      "phase": "training-2",
+      "week": 8,
+      "day": "Monday",
+      "focus": "Arms & Abs",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Drop Push Ups", "reps": 15, "type": "reps" },
+            { "name": "Plank", "duration": 60, "type": "time" },
+            { "name": "Tricep Dips (Feet Raised)", "reps": 20, "type": "reps", "hasRegression": true },
+            { "name": "Bent Leg Raises + Hip Lift", "reps": 25, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Dumbbell Squat & Press", "reps": 15, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Straight Leg Raises + Hip Lift", "reps": 15, "type": "reps" },
+            { "name": "Raised Leg Sit Ups + Twist", "reps": 20, "perSide": true, "type": "reps" },
+            { "name": "Straight Leg Raises", "reps": 20, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w8-wed",
+      "phase": "training-2",
+      "week": 8,
+      "day": "Wednesday",
+      "focus": "Abs & Cardio",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Snap Jumps", "reps": 20, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 20, "type": "reps" },
+            { "name": "Skipping", "reps": 100, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 40, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpees", "reps": 15, "type": "reps" },
+            { "name": "Mountain Climbers", "reps": 50, "perSide": true, "type": "reps" },
+            { "name": "Scissor Kicks", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "X Jumps", "reps": 20, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w8-fri",
+      "phase": "training-2",
+      "week": 8,
+      "day": "Friday",
+      "focus": "Legs & Cardio",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "X Jumps", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Weighted Step Ups", "reps": 30, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Jump Lunges", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Tuck Jumps", "reps": 15, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Sumo Jump Squats", "reps": 15, "type": "reps" },
+            { "name": "Split Squats", "reps": 15, "type": "reps" },
+            { "name": "Weighted Walking Lunges", "reps": 24, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Broad Jump Burpees", "reps": 15, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w9-mon",
+      "phase": "training-3",
+      "week": 9,
+      "day": "Monday",
+      "focus": "Legs",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Jump Lunges", "reps": 50, "perSide": true, "type": "reps" },
+            { "name": "Split Squats", "reps": 20, "type": "reps" },
+            { "name": "180 Degree Jump Squats", "reps": 20, "type": "reps" },
+            { "name": "Medicine Ball Squat Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "X Hops", "reps": 20, "type": "reps" },
+            { "name": "Knee Ups", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Double Bench Jumps", "reps": 15, "type": "reps" },
+            { "name": "Snap Jump + Knee Up", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w9-wed",
+      "phase": "training-3",
+      "week": 9,
+      "day": "Wednesday",
+      "focus": "Arms",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Drop Push Ups", "reps": 20, "type": "reps" },
+            { "name": "Medicine Ball Squat & Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Tricep Dips (Feet Raised)", "reps": 20, "type": "reps", "hasRegression": true },
+            { "name": "Mountain Climbers (10) + Push Ups (2)", "reps": 8, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Broad Jump Burpees", "reps": 15, "type": "reps" },
+            { "name": "Dumbbell Squat & Press", "reps": 15, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Decline Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Bosu Burpees", "reps": 15, "type": "reps", "equipment": "bosu" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w9-fri",
+      "phase": "training-3",
+      "week": 9,
+      "day": "Friday",
+      "focus": "Abs",
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Straight Leg Raises + Hip Lift", "reps": 20, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 20, "type": "reps" },
+            { "name": "Mountain Climbers", "reps": 50, "perSide": true, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 50, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Bench Hops", "reps": 30, "type": "reps" },
+            { "name": "Weighted Bent Leg Jackknifes", "reps": 20, "type": "reps", "hasRegression": true, "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Straight Leg Raises (On Bench)", "reps": 20, "type": "reps" },
+            { "name": "Raised Leg Sit Ups + Twist", "reps": 30, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w10-mon",
+      "phase": "training-3",
+      "week": 10,
+      "day": "Monday",
+      "focus": "Legs",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Weighted Step Ups", "reps": 30, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Double Bench Jumps", "reps": 15, "type": "reps" },
+            { "name": "Medicine Ball Crab Walk", "reps": 20, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Split Squats", "reps": 20, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpee + Push Up + Bench Jump", "reps": 15, "type": "reps" },
+            { "name": "Medicine Ball Squat Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "180 Degree Jump Squats", "reps": 24, "type": "reps" },
+            { "name": "X Jumps", "reps": 30, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w10-wed",
+      "phase": "training-3",
+      "week": 10,
+      "day": "Wednesday",
+      "focus": "Arms",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Dumbbell Squat & Press", "reps": 15, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Commandos", "reps": 36, "perSide": true, "type": "reps" },
+            { "name": "Lay Down Push Up + Tuck Jump", "reps": 20, "type": "reps" },
+            { "name": "Decline Push Ups", "reps": 20, "type": "reps", "hasRegression": true }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Spider Push Ups", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Tricep Dips (Feet Raised)", "reps": 30, "type": "reps", "hasRegression": true },
+            { "name": "Bosu Burpees", "reps": 15, "type": "reps", "equipment": "bosu" },
+            { "name": "In & Out Push Ups", "reps": 20, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w10-fri",
+      "phase": "training-3",
+      "week": 10,
+      "day": "Friday",
+      "focus": "Abs",
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Snap Jumps", "reps": 30, "type": "reps" },
+            { "name": "Spider Push Ups", "reps": 16, "perSide": true, "type": "reps" },
+            { "name": "Scissor Kicks", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Bench Hops", "reps": 30, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Straight Leg Raises (On Bench)", "reps": 20, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 20, "type": "reps" },
+            { "name": "Weighted Bent Leg Jackknifes", "reps": 20, "type": "reps", "hasRegression": true, "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Burpee + Push Up + Bench Jump", "reps": 15, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w11-mon",
+      "phase": "training-3",
+      "week": 11,
+      "day": "Monday",
+      "focus": "Legs",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Jump Lunges", "reps": 50, "perSide": true, "type": "reps" },
+            { "name": "Split Squats", "reps": 20, "type": "reps" },
+            { "name": "180 Degree Jump Squats", "reps": 20, "type": "reps" },
+            { "name": "Medicine Ball Squat Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "X Hops", "reps": 20, "type": "reps" },
+            { "name": "Knee Ups", "reps": 30, "perSide": true, "type": "reps" },
+            { "name": "Double Bench Jumps", "reps": 15, "type": "reps" },
+            { "name": "Snap Jump + Knee Up", "reps": 24, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w11-wed",
+      "phase": "training-3",
+      "week": 11,
+      "day": "Wednesday",
+      "focus": "Arms",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Drop Push Ups", "reps": 20, "type": "reps" },
+            { "name": "Medicine Ball Squat & Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Tricep Dips (Feet Raised)", "reps": 20, "type": "reps", "hasRegression": true },
+            { "name": "Mountain Climbers (10) + Push Ups (2)", "reps": 8, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Broad Jump Burpees", "reps": 15, "type": "reps" },
+            { "name": "Dumbbell Squat & Press", "reps": 15, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Decline Push Ups", "reps": 15, "type": "reps", "hasRegression": true },
+            { "name": "Bosu Burpees", "reps": 15, "type": "reps", "equipment": "bosu" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w11-fri",
+      "phase": "training-3",
+      "week": 11,
+      "day": "Friday",
+      "focus": "Abs",
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Straight Leg Raises + Hip Lift", "reps": 20, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 20, "type": "reps" },
+            { "name": "Mountain Climbers", "reps": 50, "perSide": true, "type": "reps" },
+            { "name": "Ab Bikes", "reps": 50, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Bench Hops", "reps": 30, "type": "reps" },
+            { "name": "Weighted Bent Leg Jackknifes", "reps": 20, "type": "reps", "hasRegression": true, "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Straight Leg Raises (On Bench)", "reps": 20, "type": "reps" },
+            { "name": "Raised Leg Sit Ups + Twist", "reps": 30, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w12-mon",
+      "phase": "training-3",
+      "week": 12,
+      "day": "Monday",
+      "focus": "Legs",
+      "coolDown": "Lower Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Weighted Step Ups", "reps": 30, "perSide": true, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Double Bench Jumps", "reps": 15, "type": "reps" },
+            { "name": "Medicine Ball Crab Walk", "reps": 20, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "Split Squats", "reps": 20, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Burpee + Push Up + Bench Jump", "reps": 15, "type": "reps" },
+            { "name": "Medicine Ball Squat Press", "reps": 15, "type": "reps", "equipment": "medicine-ball", "weight": "6-12 kg" },
+            { "name": "180 Degree Jump Squats", "reps": 24, "type": "reps" },
+            { "name": "X Jumps", "reps": 30, "perSide": true, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w12-wed",
+      "phase": "training-3",
+      "week": 12,
+      "day": "Wednesday",
+      "focus": "Arms",
+      "coolDown": "Upper Body Stretch Routine",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Dumbbell Squat & Press", "reps": 15, "type": "reps", "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Commandos", "reps": 36, "perSide": true, "type": "reps" },
+            { "name": "Lay Down Push Up + Tuck Jump", "reps": 20, "type": "reps" },
+            { "name": "Decline Push Ups", "reps": 20, "type": "reps", "hasRegression": true }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Spider Push Ups", "reps": 24, "perSide": true, "type": "reps" },
+            { "name": "Tricep Dips (Feet Raised)", "reps": 30, "type": "reps", "hasRegression": true },
+            { "name": "Bosu Burpees", "reps": 15, "type": "reps", "equipment": "bosu" },
+            { "name": "In & Out Push Ups", "reps": 20, "type": "reps" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "w12-fri",
+      "phase": "training-3",
+      "week": 12,
+      "day": "Friday",
+      "focus": "Abs",
+      "coolDown": "Lower and Upper Body Stretch Routines",
+      "circuits": [
+        {
+          "id": 1,
+          "name": "Circuit One",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Snap Jumps", "reps": 30, "type": "reps" },
+            { "name": "Spider Push Ups", "reps": 16, "perSide": true, "type": "reps" },
+            { "name": "Scissor Kicks", "reps": 40, "perSide": true, "type": "reps" },
+            { "name": "Bench Hops", "reps": 30, "perSide": true, "type": "reps" }
+          ]
+        },
+        {
+          "id": 2,
+          "name": "Circuit Two",
+          "duration": "7 min",
+          "rounds": 2,
+          "exercises": [
+            { "name": "Straight Leg Raises (On Bench)", "reps": 20, "type": "reps" },
+            { "name": "Straight Leg Jackknifes", "reps": 20, "type": "reps" },
+            { "name": "Weighted Bent Leg Jackknifes", "reps": 20, "type": "reps", "hasRegression": true, "equipment": "dumbbell", "weight": "3-6 kg" },
+            { "name": "Burpee + Push Up + Bench Jump", "reps": 15, "type": "reps" }
+          ]
+        }
+      ]
+    }
+  ]
+}

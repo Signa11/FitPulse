@@ -150,7 +150,7 @@ const HomePage = () => {
             {/* Quick Start CTA */}
             <div 
                 className="relative bg-gradient-to-r from-[#FF6B4A] to-[#FF8A6F] rounded-2xl p-5 overflow-hidden cursor-pointer hover:scale-[1.02] transition-transform"
-                onClick={() => navigate(`/workout/${quickWorkout.id}`)}
+                onClick={() => navigate(`/fitpulse/workout/${quickWorkout.id}`)}
             >
                 <div className="absolute right-0 top-0 w-24 h-24 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
                 <div className="absolute right-8 bottom-0 w-16 h-16 bg-white/10 rounded-full translate-y-1/2" />
@@ -179,7 +179,7 @@ const HomePage = () => {
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-lg font-bold text-white">{t('home.recentActivity')}</h2>
                         <button 
-                            onClick={() => navigate('/profile')}
+                            onClick={() => navigate('/fitpulse/profile')}
                             className="text-sm text-[#FF6B4A] font-medium flex items-center gap-1"
                         >
                             {t('home.viewAll')}
@@ -223,7 +223,7 @@ const HomePage = () => {
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-bold text-white">{t('home.featuredWorkouts')}</h2>
                     <button 
-                        onClick={() => navigate('/workouts')}
+                        onClick={() => navigate('/fitpulse/workouts')}
                         className="text-sm text-[#FF6B4A] font-medium flex items-center gap-1"
                     >
                         {t('home.seeAll')}
@@ -235,7 +235,7 @@ const HomePage = () => {
                     {featuredWorkouts.map((workout) => (
                         <div
                             key={workout.id}
-                            onClick={() => navigate(`/workout/${workout.id}`)}
+                            onClick={() => navigate(`/fitpulse/workout/${workout.id}`)}
                             className="bg-[#141416] rounded-xl border border-white/5 overflow-hidden cursor-pointer hover:border-white/10 hover:bg-[#1C1C1E] transition-all flex"
                         >
                             <div className="w-24 h-24 flex-shrink-0 relative">
@@ -284,7 +284,7 @@ const HomePage = () => {
                     ].map((category) => (
                         <button
                             key={category.name}
-                            onClick={() => navigate('/workouts')}
+                            onClick={() => navigate('/fitpulse/workouts')}
                             className={`bg-gradient-to-br ${category.color} rounded-xl p-4 border border-white/5 text-left hover:border-white/10 transition-all`}
                         >
                             <span className="text-2xl mb-2 block">{category.emoji}</span>

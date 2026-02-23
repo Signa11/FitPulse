@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/ui/Button';
-import Logo from '../components/ui/Logo';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -48,15 +47,17 @@ const LoginPage = () => {
     return (
         <div className="min-h-screen bg-[#0A0A0B] flex flex-col relative overflow-hidden">
             {/* Background glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#FF6B4A]/10 rounded-full blur-3xl" />
-            
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
+
             {/* Header */}
             <div className="relative p-6 text-center pt-16">
                 <div className="inline-flex items-center justify-center mb-6">
-                    <Logo size={80} />
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#FF6B4A] via-[#7C3AED] to-[#4FACFE] flex items-center justify-center">
+                        <span className="text-4xl font-black text-white">M</span>
+                    </div>
                 </div>
                 <h1 className="text-3xl font-bold text-white">Welcome Back!</h1>
-                <p className="text-white/40 mt-2">Sign in to continue your journey</p>
+                <p className="text-white/40 mt-2">Sign in to MoveLab</p>
             </div>
 
             {/* Form */}
@@ -73,7 +74,7 @@ const LoginPage = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="you@example.com"
-                                className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#FF6B4A] focus:border-transparent transition-all"
+                                className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition-all"
                             />
                         </div>
                     </div>
@@ -89,7 +90,7 @@ const LoginPage = () => {
                                 value={formData.password}
                                 onChange={handleChange}
                                 placeholder="Enter your password"
-                                className="w-full pl-12 pr-12 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#FF6B4A] focus:border-transparent transition-all"
+                                className="w-full pl-12 pr-12 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition-all"
                             />
                             <button
                                 type="button"
@@ -103,7 +104,7 @@ const LoginPage = () => {
 
                     {/* Forgot Password */}
                     <div className="text-right">
-                        <button type="button" className="text-sm text-[#FF6B4A] font-medium hover:underline">
+                        <button type="button" className="text-sm text-white font-medium hover:underline">
                             Forgot Password?
                         </button>
                     </div>
@@ -168,7 +169,7 @@ const LoginPage = () => {
                 {/* Register Link */}
                 <p className="text-center mt-10 text-white/50">
                     Don't have an account?{' '}
-                    <Link to="/register" className="font-semibold text-[#FF6B4A] hover:underline">
+                    <Link to="/register" className="font-semibold text-white hover:underline">
                         Sign Up
                     </Link>
                 </p>
