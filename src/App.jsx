@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import AppSelectorPage from './pages/AppSelectorPage';
 
 const FitPulseApp = lazy(() => import('./apps/fitpulse/FitPulseApp'));
@@ -43,6 +44,7 @@ function AppContent() {
           {/* Public auth routes */}
           <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
           <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+          <Route path="/reset-password" element={<PublicRoute><ResetPasswordPage /></PublicRoute>} />
 
           {/* App selector (protected) */}
           <Route path="/" element={<ProtectedRoute><AppSelectorPage /></ProtectedRoute>} />
