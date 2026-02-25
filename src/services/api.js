@@ -12,7 +12,18 @@ async function fetchApi(endpoint, options = {}) {
             ...options,
         });
 
-        const data = await response.json();
+        const text = await response.text();
+        let data;
+
+        if (!text) {
+            throw new Error('Server returned an empty response');
+        }
+
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            throw new Error('Unable to reach the server. Please try again later.');
+        }
 
         if (!response.ok) {
             throw new Error(data.message || 'API request failed');

@@ -24,6 +24,7 @@ const ProfilePage = () => {
     const [showAvatarEditor, setShowAvatarEditor] = useState(false);
     const [selectedAvatar, setSelectedAvatar] = useState('');
     const [isUpdating, setIsUpdating] = useState(false);
+    const [avatarError, setAvatarError] = useState('');
 
     const totalPoints = workoutHistory.reduce((acc, w) => acc + (w.points || 0), 0);
 
@@ -57,14 +58,14 @@ const ProfilePage = () => {
 
     const handleSaveAvatar = async () => {
         if (!selectedAvatar) return;
-        
+
         setIsUpdating(true);
+        setAvatarError('');
         try {
             await updateProfile({ avatar_url: selectedAvatar });
             setShowAvatarEditor(false);
         } catch (error) {
-            console.error('Failed to update avatar:', error);
-            alert('Failed to update avatar. Please try again.');
+            setAvatarError(error.message || 'Failed to update avatar. Please try again.');
         } finally {
             setIsUpdating(false);
         }
@@ -272,11 +273,18 @@ const ProfilePage = () => {
                             ))}
                         </div>
 
+                        {avatarError && (
+                            <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm mb-4">
+                                {avatarError}
+                            </div>
+                        )}
+
                         <div className="flex gap-3">
                             <button
                                 onClick={() => {
                                     setShowAvatarEditor(false);
                                     setSelectedAvatar(user?.avatar || '');
+                                    setAvatarError('');
                                 }}
                                 className="flex-1 py-3 bg-white/10 text-white rounded-xl font-medium hover:bg-white/20 transition-colors"
                                 disabled={isUpdating}

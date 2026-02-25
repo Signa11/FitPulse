@@ -71,7 +71,15 @@ export default async function handler(request) {
         }
 
         if (request.method === 'PATCH') {
-            const body = await request.json();
+            let body;
+            try {
+                body = await request.json();
+            } catch (e) {
+                return jsonResponse({
+                    error: true,
+                    message: 'Invalid request body. Please provide valid JSON.'
+                }, 400);
+            }
             const { name, avatar_url } = body;
 
             const [updated] = await sql`
