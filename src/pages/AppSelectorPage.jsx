@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Dumbbell, Timer, Activity, LogOut, Users, Zap, TrendingUp } from 'lucide-react';
+import { Dumbbell, Timer, Activity, LogOut, Users, Zap, TrendingUp, X, Award, Flame, Calendar } from 'lucide-react';
 
 const apps = [
   { id: 'fitpulse', name: 'FitPulse', description: 'Workouts & nutrition', icon: Dumbbell, accent: '#FF6B4A', path: '/fitpulse' },
@@ -38,6 +38,132 @@ function timeAgo(dateStr) {
   return new Date(dateStr).toLocaleDateString();
 }
 
+function memberSinceLabel(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
+
+// ── Profile Modal ─────────────────────────────────────────
+
+function ProfileModal({ member, feed, onClose }) {
+  if (!member) return null;
+
+  const memberFeed = feed.filter(a => a.user.id === member.id);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={onClose}>
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+
+      {/* Modal */}
+      <div
+        className="relative w-full max-w-md max-h-[85vh] bg-[#141416] border border-white/10 rounded-t-3xl sm:rounded-3xl overflow-hidden flex flex-col animate-[slideUp_0.2s_ease-out]"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="relative px-5 pt-5 pb-4 text-center border-b border-white/5">
+          <button
+            onClick={onClose}
+            className="absolute right-4 top-4 p-1.5 rounded-full bg-white/5 text-white/40 hover:text-white/70 transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+
+          {/* Avatar */}
+          <div className="mx-auto mb-3">
+            {member.avatar ? (
+              <img src={member.avatar} alt="" className="w-20 h-20 rounded-full border-3 border-white/10 mx-auto" />
+            ) : (
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#FF6B4A] to-[#4FACFE] flex items-center justify-center border-3 border-white/10 mx-auto">
+                <span className="text-white font-bold text-2xl">
+                  {member.name?.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
+          </div>
+
+          <h2 className="text-white font-bold text-lg">{member.name}</h2>
+          <p className="text-white/30 text-xs mt-0.5 flex items-center justify-center gap-1">
+            <Calendar className="w-3 h-3" />
+            Member since {memberSinceLabel(member.memberSince)}
+          </p>
+
+          {/* Stats */}
+          <div className="flex justify-center gap-6 mt-4">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1 text-white font-bold text-lg">
+                <Award className="w-4 h-4 text-[#4FACFE]" />
+                {member.level || 1}
+              </div>
+              <p className="text-white/30 text-[10px] uppercase tracking-wider">Level</p>
+            </div>
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1 text-white font-bold text-lg">
+                <Flame className="w-4 h-4 text-orange-400" />
+                {member.streak || 0}
+              </div>
+              <p className="text-white/30 text-[10px] uppercase tracking-wider">Streak</p>
+            </div>
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1 text-white font-bold text-lg">
+                <Zap className="w-4 h-4 text-yellow-400" />
+                {member.points || 0}
+              </div>
+              <p className="text-white/30 text-[10px] uppercase tracking-wider">Points</p>
+            </div>
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1 text-white font-bold text-lg">
+                <Dumbbell className="w-4 h-4 text-green-400" />
+                {member.workoutsCompleted || 0}
+              </div>
+              <p className="text-white/30 text-[10px] uppercase tracking-wider">Workouts</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Activity list */}
+        <div className="flex-1 overflow-y-auto px-5 py-4">
+          <p className="text-white/40 text-xs uppercase tracking-wider font-semibold mb-3">Recent Activity</p>
+
+          {memberFeed.length === 0 ? (
+            <div className="text-center py-8">
+              <Activity className="w-6 h-6 mx-auto mb-2 text-white/10" />
+              <p className="text-white/25 text-sm">No activity yet</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {memberFeed.map(item => {
+                const Icon = TARGET_ICONS[item.targetType] || Activity;
+                return (
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-3 py-2"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-4 h-4 text-white/30" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-white/70">
+                        <span className="text-white/40">{ACTION_LABELS[item.action] || item.action}</span>
+                        {' '}
+                        <span className="text-white/80">{item.target}</span>
+                      </p>
+                      <p className="text-white/20 text-xs">{timeAgo(item.createdAt)}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Main Page ─────────────────────────────────────────────
+
 export default function AppSelectorPage() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -45,6 +171,7 @@ export default function AppSelectorPage() {
   const [feed, setFeed] = useState([]);
   const [loadingMembers, setLoadingMembers] = useState(true);
   const [loadingFeed, setLoadingFeed] = useState(true);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   useEffect(() => {
     fetch('/api/community/members')
@@ -53,7 +180,7 @@ export default function AppSelectorPage() {
       .catch(() => {})
       .finally(() => setLoadingMembers(false));
 
-    fetch('/api/community/feed?limit=20')
+    fetch('/api/community/feed?limit=50')
       .then(r => r.json())
       .then(d => { if (d.data) setFeed(d.data); })
       .catch(() => {})
@@ -76,9 +203,15 @@ export default function AppSelectorPage() {
           <span className="text-white font-bold text-lg">MoveLab</span>
         </div>
         <div className="flex items-center gap-3">
-          {user?.avatar && (
-            <img src={user.avatar} alt="" className="w-7 h-7 rounded-full" />
-          )}
+          <button onClick={() => navigate('/profile')} className="hover:opacity-80 transition-opacity">
+            {user?.avatar ? (
+              <img src={user.avatar} alt="" className="w-7 h-7 rounded-full" />
+            ) : (
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#FF6B4A] to-[#4FACFE] flex items-center justify-center">
+                <span className="text-white font-bold text-xs">{user?.name?.charAt(0)?.toUpperCase()}</span>
+              </div>
+            )}
+          </button>
           <button
             onClick={handleLogout}
             className="text-white/30 hover:text-white/60 transition-colors"
@@ -145,12 +278,16 @@ export default function AppSelectorPage() {
           ) : (
             <div className="flex gap-4 overflow-x-auto pb-1 -mx-5 px-5 scrollbar-hide">
               {members.map(m => (
-                <div key={m.id} className="flex flex-col items-center gap-1.5 flex-shrink-0">
+                <button
+                  key={m.id}
+                  onClick={() => setSelectedMember(m)}
+                  className="flex flex-col items-center gap-1.5 flex-shrink-0 group"
+                >
                   <div className="relative">
                     {m.avatar ? (
-                      <img src={m.avatar} alt="" className="w-12 h-12 rounded-full border-2 border-white/10" />
+                      <img src={m.avatar} alt="" className="w-12 h-12 rounded-full border-2 border-white/10 group-hover:border-white/30 transition-colors" />
                     ) : (
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF6B4A] to-[#4FACFE] flex items-center justify-center border-2 border-white/10">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF6B4A] to-[#4FACFE] flex items-center justify-center border-2 border-white/10 group-hover:border-white/30 transition-colors">
                         <span className="text-white font-bold text-sm">
                           {m.name?.charAt(0).toUpperCase()}
                         </span>
@@ -162,10 +299,10 @@ export default function AppSelectorPage() {
                       </div>
                     )}
                   </div>
-                  <span className="text-white/60 text-[11px] truncate w-16 text-center">
+                  <span className="text-white/60 text-[11px] truncate w-16 text-center group-hover:text-white/80 transition-colors">
                     {m.name?.split(' ')[0]}
                   </span>
-                </div>
+                </button>
               ))}
             </div>
           )}
@@ -201,9 +338,13 @@ export default function AppSelectorPage() {
               {feed.map(item => {
                 const Icon = TARGET_ICONS[item.targetType] || Activity;
                 return (
-                  <div
+                  <button
                     key={item.id}
-                    className="bg-[#141416] border border-white/5 rounded-xl px-4 py-3 flex items-center gap-3"
+                    onClick={() => {
+                      const m = members.find(mb => mb.id === item.user.id);
+                      if (m) setSelectedMember(m);
+                    }}
+                    className="w-full bg-[#141416] border border-white/5 rounded-xl px-4 py-3 flex items-center gap-3 hover:border-white/10 transition-colors text-left"
                   >
                     {item.user.avatar ? (
                       <img src={item.user.avatar} alt="" className="w-9 h-9 rounded-full flex-shrink-0" />
@@ -225,13 +366,22 @@ export default function AppSelectorPage() {
                       <p className="text-white/25 text-xs mt-0.5">{timeAgo(item.createdAt)}</p>
                     </div>
                     <Icon className="w-4 h-4 text-white/15 flex-shrink-0" />
-                  </div>
+                  </button>
                 );
               })}
             </div>
           )}
         </section>
       </div>
+
+      {/* Profile Modal */}
+      {selectedMember && (
+        <ProfileModal
+          member={selectedMember}
+          feed={feed}
+          onClose={() => setSelectedMember(null)}
+        />
+      )}
     </div>
   );
 }

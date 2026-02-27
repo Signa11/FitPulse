@@ -55,6 +55,7 @@ export default function IntervalBuilderPage() {
   const [saved, setSaved] = useState(false);
   const [garminSending, setGarminSending] = useState(false);
   const [garminSent, setGarminSent] = useState(false);
+  const [scheduleDate, setScheduleDate] = useState('');
 
   // Reload if navigating to a different ID
   useEffect(() => {
@@ -162,7 +163,7 @@ export default function IntervalBuilderPage() {
     const w = { ...workout, name: workout.name || 'Untitled Workout' };
     setGarminSending(true);
     try {
-      await sendToGarmin(w);
+      await sendToGarmin(w, scheduleDate || undefined);
       setGarminSent(true);
       setTimeout(() => setGarminSent(false), 2000);
     } catch (err) {
@@ -279,6 +280,24 @@ export default function IntervalBuilderPage() {
           </button>
         )}
       </div>
+
+      {/* Optional: Schedule date for Garmin */}
+      {garminStatus.connected && (
+        <div className="flex items-center gap-2 pb-4 -mt-3">
+          <label className="text-white/30 text-xs">Schedule for:</label>
+          <input
+            type="date"
+            value={scheduleDate}
+            onChange={e => setScheduleDate(e.target.value)}
+            className="bg-[#141416] border border-white/10 text-white/70 text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#4FACFE]/50"
+          />
+          {scheduleDate && (
+            <button onClick={() => setScheduleDate('')} className="text-white/30 hover:text-white/60 text-xs">
+              clear
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

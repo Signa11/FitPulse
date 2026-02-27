@@ -50,9 +50,9 @@ export async function disconnectGarmin(userId) {
     });
 }
 
-export async function sendWorkoutToGarmin(userId, workout) {
+export async function sendWorkoutToGarmin(userId, workout, scheduleDate) {
     return garminFetch('/garmin/send-workout', {
         method: 'POST',
-        body: JSON.stringify({ userId, workout }),
+        body: JSON.stringify({ userId, workout, scheduleDate: scheduleDate || undefined }),
     });
 }

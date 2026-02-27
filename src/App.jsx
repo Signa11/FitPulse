@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import AppSelectorPage from './pages/AppSelectorPage';
+import MyProfilePage from './pages/MyProfilePage';
 
 const FitPulseApp = lazy(() => import('./apps/fitpulse/FitPulseApp'));
 const NathaFitApp = lazy(() => import('./apps/nathafit/NathaFitApp'));
@@ -48,6 +49,7 @@ function AppContent() {
 
           {/* App selector (protected) */}
           <Route path="/" element={<ProtectedRoute><AppSelectorPage /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><MyProfilePage /></ProtectedRoute>} />
 
           {/* App sub-routes (protected) */}
           <Route path="/fitpulse/*" element={<ProtectedRoute><FitPulseApp /></ProtectedRoute>} />

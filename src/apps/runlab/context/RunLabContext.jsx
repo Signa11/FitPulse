@@ -109,9 +109,9 @@ export function RunLabProvider({ children }) {
     setGarminStatus({ connected: false, displayName: null, loading: false });
   }, [user?.id]);
 
-  const sendToGarmin = useCallback(async (workout) => {
+  const sendToGarmin = useCallback(async (workout, scheduleDate) => {
     if (!user?.id) throw new Error('Must be logged in');
-    const result = await garminAPI.sendWorkoutToGarmin(user.id, workout);
+    const result = await garminAPI.sendWorkoutToGarmin(user.id, workout, scheduleDate);
     return result;
   }, [user?.id]);
 

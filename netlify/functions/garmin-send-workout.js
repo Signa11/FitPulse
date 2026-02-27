@@ -26,7 +26,7 @@ export const handler = async (event) => {
             return jsonResponse({ error: true, message: 'Invalid request body' }, 400);
         }
 
-        const { userId, workout } = body;
+        const { userId, workout, scheduleDate } = body;
 
         if (!userId || !workout) {
             return jsonResponse({ error: true, message: 'userId and workout are required' }, 400);
@@ -66,27 +66,34 @@ export const handler = async (event) => {
         try {
             result = await client.addWorkout(garminWorkout);
         } catch (apiError) {
-            // Token may have expired - try to refresh and retry
-            if (apiError.message?.includes('401') || apiError.response?.status === 401) {
-                // Refresh tokens
-                try {
-                    const freshTokens = client.exportToken();
-                    await sql`
-                        UPDATE garmin_tokens
-                        SET oauth2_token = ${JSON.stringify(freshTokens.oauth2)}
-                        WHERE user_id = ${userId}
-                    `;
-                    result = await client.addWorkout(garminWorkout);
-                } catch (refreshError) {
-                    // Token refresh failed, user needs to reconnect
-                    return jsonResponse({
-                        error: true,
-                        message: 'Garmin session expired. Please reconnect your Garmin account.',
-                        code: 'TOKEN_EXPIRED',
-                    }, 401);
-                }
-            } else {
-                throw apiError;
+            const status = apiError.response?.status || apiError.status;
+            const detail = apiError.response?.data || apiError.message;
+            console.error('Garmin addWorkout error:', status, JSON.stringify(detail));
+
+            if (status === 401 || apiError.message?.includes('401')) {
+                return jsonResponse({
+                    error: true,
+                    message: 'Garmin session expired. Please reconnect your Garmin account.',
+                    code: 'TOKEN_EXPIRED',
+                }, 401);
+            }
+
+            return jsonResponse({
+                error: true,
+                message: `Garmin rejected the workout: ${typeof detail === 'string' ? detail : JSON.stringify(detail) || apiError.message}`,
+            }, 502);
+        }
+
+        // Schedule to a specific date if requested
+        if (scheduleDate && result?.workoutId) {
+            try {
+                await client.scheduleWorkout(
+                    { workoutId: String(result.workoutId) },
+                    new Date(scheduleDate)
+                );
+            } catch (schedErr) {
+                console.error('Garmin schedule error:', schedErr.message);
+                // Non-critical — workout was created, just not scheduled
             }
         }
 
@@ -99,13 +106,16 @@ export const handler = async (event) => {
                 WHERE user_id = ${userId}
             `;
         } catch (e) {
-            // Non-critical, don't fail the request
+            // Non-critical
         }
 
         return jsonResponse({
             success: true,
             garminWorkoutId: result?.workoutId || null,
-            message: 'Workout sent to Garmin Connect!',
+            scheduled: !!scheduleDate,
+            message: scheduleDate
+                ? `Workout sent and scheduled for ${scheduleDate}!`
+                : 'Workout sent to Garmin Connect!',
         });
     } catch (error) {
         console.error('Garmin send workout error:', error);
