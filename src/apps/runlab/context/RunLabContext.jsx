@@ -1,5 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useAuth } from '../../../context/AuthContext';
+import * as garminAPI from '../services/garminService';
 
 const RunLabContext = createContext(null);
 
@@ -24,12 +26,25 @@ function saveJSON(key, data) {
 }
 
 export function RunLabProvider({ children }) {
+  const { user } = useAuth();
   const [workouts, setWorkouts] = useState(() => loadJSON(WORKOUTS_KEY));
   const [plans, setPlans] = useState(() => loadJSON(PLANS_KEY));
+  const [garminStatus, setGarminStatus] = useState({ connected: false, displayName: null, loading: true });
 
   // Persist on change
   useEffect(() => { saveJSON(WORKOUTS_KEY, workouts); }, [workouts]);
   useEffect(() => { saveJSON(PLANS_KEY, plans); }, [plans]);
+
+  // Check Garmin connection status on mount
+  useEffect(() => {
+    if (!user?.id) {
+      setGarminStatus({ connected: false, displayName: null, loading: false });
+      return;
+    }
+    garminAPI.checkGarminStatus(user.id)
+      .then(data => setGarminStatus({ connected: data.connected, displayName: data.displayName || null, loading: false }))
+      .catch(() => setGarminStatus({ connected: false, displayName: null, loading: false }));
+  }, [user?.id]);
 
   // ── Workout CRUD ───────────────────────────────────────────
 
@@ -71,6 +86,27 @@ export function RunLabProvider({ children }) {
     return plans.find(p => p.id === id) || null;
   }, [plans]);
 
+  // ── Garmin Integration ─────────────────────────────────────
+
+  const connectGarmin = useCallback(async (garminEmail, garminPassword) => {
+    if (!user?.id) throw new Error('Must be logged in');
+    const result = await garminAPI.connectGarmin(user.id, garminEmail, garminPassword);
+    setGarminStatus({ connected: true, displayName: result.displayName, loading: false });
+    return result;
+  }, [user?.id]);
+
+  const disconnectGarmin = useCallback(async () => {
+    if (!user?.id) return;
+    await garminAPI.disconnectGarmin(user.id);
+    setGarminStatus({ connected: false, displayName: null, loading: false });
+  }, [user?.id]);
+
+  const sendToGarmin = useCallback(async (workout) => {
+    if (!user?.id) throw new Error('Must be logged in');
+    const result = await garminAPI.sendWorkoutToGarmin(user.id, workout);
+    return result;
+  }, [user?.id]);
+
   return (
     <RunLabContext.Provider value={{
       workouts,
@@ -83,6 +119,10 @@ export function RunLabProvider({ children }) {
       updatePlan,
       deletePlan,
       getPlan,
+      garminStatus,
+      connectGarmin,
+      disconnectGarmin,
+      sendToGarmin,
     }}>
       {children}
     </RunLabContext.Provider>

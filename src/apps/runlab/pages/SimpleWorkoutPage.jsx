@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Download, Save, Zap } from 'lucide-react';
+import { ArrowLeft, Download, Save, Zap, Upload, Loader2 } from 'lucide-react';
 import { useRunLab } from '../context/RunLabContext';
 import { createWorkout, createStep, StepType, DurationType, TargetType } from '../data/models';
 import { paceToSpeed, parseDuration, parseDistance } from '../data/paceZones';
@@ -10,7 +10,7 @@ const ACCENT = '#4FACFE';
 
 export default function SimpleWorkoutPage() {
   const navigate = useNavigate();
-  const { addWorkout } = useRunLab();
+  const { addWorkout, garminStatus, sendToGarmin } = useRunLab();
 
   const [name, setName] = useState('');
   const [mode, setMode] = useState('distance'); // 'distance' | 'time'
@@ -18,6 +18,8 @@ export default function SimpleWorkoutPage() {
   const [time, setTime] = useState('');           // e.g. "30:00"
   const [pace, setPace] = useState('');           // e.g. "5:30"
   const [saved, setSaved] = useState(false);
+  const [garminSending, setGarminSending] = useState(false);
+  const [garminSent, setGarminSent] = useState(false);
 
   function buildWorkout() {
     const steps = [];
@@ -77,6 +79,20 @@ export default function SimpleWorkoutPage() {
   function handleExport() {
     const w = buildWorkout();
     exportWorkoutTCX(w);
+  }
+
+  async function handleSendToGarmin() {
+    const w = buildWorkout();
+    setGarminSending(true);
+    try {
+      await sendToGarmin(w);
+      setGarminSent(true);
+      setTimeout(() => setGarminSent(false), 2000);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setGarminSending(false);
+    }
   }
 
   return (
@@ -209,6 +225,17 @@ export default function SimpleWorkoutPage() {
           <Download className="w-4 h-4" />
           Export TCX
         </button>
+        {garminStatus.connected && (
+          <button
+            onClick={handleSendToGarmin}
+            disabled={garminSending}
+            className="flex items-center justify-center gap-2 rounded-xl py-3.5 px-5 font-semibold text-sm transition-all active:scale-[0.97] disabled:opacity-50"
+            style={{ background: garminSent ? '#22c55e' : `${ACCENT}20`, color: garminSent ? '#fff' : ACCENT }}
+          >
+            {garminSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+            {garminSent ? 'Sent!' : 'Garmin'}
+          </button>
+        )}
       </div>
     </div>
   );

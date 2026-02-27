@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   Plus, Trash2, GripVertical, Save, Download, ChevronDown, ChevronUp,
-  Repeat, ArrowLeft,
+  Repeat, ArrowLeft, Upload, Loader2,
 } from 'lucide-react';
 import { useRunLab } from '../context/RunLabContext';
 import {
@@ -34,7 +34,7 @@ const STEP_TYPE_OPTIONS = [
 export default function IntervalBuilderPage() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { addWorkout, updateWorkout, getWorkout } = useRunLab();
+  const { addWorkout, updateWorkout, getWorkout, garminStatus, sendToGarmin } = useRunLab();
 
   const [workout, setWorkout] = useState(() => {
     if (id) {
@@ -52,6 +52,8 @@ export default function IntervalBuilderPage() {
   });
 
   const [saved, setSaved] = useState(false);
+  const [garminSending, setGarminSending] = useState(false);
+  const [garminSent, setGarminSent] = useState(false);
 
   // Reload if navigating to a different ID
   useEffect(() => {
@@ -155,6 +157,20 @@ export default function IntervalBuilderPage() {
     exportWorkoutTCX(w);
   }
 
+  async function handleSendToGarmin() {
+    const w = { ...workout, name: workout.name || 'Untitled Workout' };
+    setGarminSending(true);
+    try {
+      await sendToGarmin(w);
+      setGarminSent(true);
+      setTimeout(() => setGarminSent(false), 2000);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setGarminSending(false);
+    }
+  }
+
   // ── Render ─────────────────────────────────────────────────
 
   return (
@@ -250,6 +266,17 @@ export default function IntervalBuilderPage() {
           <Download className="w-4 h-4" />
           Export TCX
         </button>
+        {garminStatus.connected && (
+          <button
+            onClick={handleSendToGarmin}
+            disabled={garminSending}
+            className="flex items-center justify-center gap-2 rounded-xl py-3.5 px-5 font-semibold text-sm transition-all active:scale-[0.97] disabled:opacity-50"
+            style={{ background: garminSent ? '#22c55e' : `${ACCENT}20`, color: garminSent ? '#fff' : ACCENT }}
+          >
+            {garminSending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+            {garminSent ? 'Sent!' : 'Garmin'}
+          </button>
+        )}
       </div>
     </div>
   );

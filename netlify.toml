@@ -27,6 +27,26 @@
   to = "/.netlify/functions/user-profile"
   status = 200
 
+[[redirects]]
+  from = "/api/garmin/connect"
+  to = "/.netlify/functions/garmin-connect"
+  status = 200
+
+[[redirects]]
+  from = "/api/garmin/status"
+  to = "/.netlify/functions/garmin-status"
+  status = 200
+
+[[redirects]]
+  from = "/api/garmin/send-workout"
+  to = "/.netlify/functions/garmin-send-workout"
+  status = 200
+
+[[redirects]]
+  from = "/api/garmin/disconnect"
+  to = "/.netlify/functions/garmin-disconnect"
+  status = 200
+
 # SPA fallback - all non-API routes go to index.html
 [[redirects]]
   from = "/*"

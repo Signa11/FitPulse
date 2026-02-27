@@ -74,10 +74,39 @@ const server = createServer(async (req, res) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const pathname = url.pathname;
 
+    // Handle Netlify-style functions (e.g., /api/garmin/*)
+    if (pathname.startsWith('/api/garmin/')) {
+        const funcName = 'garmin-' + pathname.replace('/api/garmin/', '');
+        try {
+            const funcPath = join(__dirname, 'netlify', 'functions', funcName + '.js');
+            const funcUrl = 'file://' + funcPath;
+            const module = await import(funcUrl);
+            const body = await getRequestBody(req);
+            const event = {
+                httpMethod: req.method,
+                body,
+                path: pathname,
+                rawUrl: `http://${req.headers.host || 'localhost:' + PORT}${req.url}`,
+                rawQuery: url.search.replace('?', ''),
+                headers: req.headers,
+                queryStringParameters: Object.fromEntries(url.searchParams),
+            };
+            const response = await module.handler(event, {});
+            const headers = response.headers || { 'Content-Type': 'application/json' };
+            res.writeHead(response.statusCode || 200, headers);
+            res.end(response.body || '');
+        } catch (error) {
+            console.error('Error handling Netlify function:', error);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Internal server error', message: error.message }));
+        }
+        return;
+    }
+
     // Handle API routes
     if (pathname.startsWith('/api/')) {
         const apiPath = pathname.replace('/api/', '');
-        
+
         try {
             const handler = await loadHandler(apiPath);
             
