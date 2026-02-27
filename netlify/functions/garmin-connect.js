@@ -31,8 +31,9 @@ export const handler = async (event) => {
             return jsonResponse({ error: true, message: 'userId, garminEmail, and garminPassword are required' }, 400);
         }
 
-        // Dynamic import since garmin-connect is CJS
-        const { GarminConnect } = await import('garmin-connect');
+        // Dynamic import - CJS module wraps under .default
+        const mod = await import('garmin-connect');
+        const GarminConnect = mod.GarminConnect || mod.default?.GarminConnect;
         const client = new GarminConnect({ username: garminEmail, password: garminPassword });
 
         await client.login();

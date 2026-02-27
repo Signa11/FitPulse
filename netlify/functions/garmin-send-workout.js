@@ -53,7 +53,8 @@ export const handler = async (event) => {
         const oauth2 = typeof row.oauth2_token === 'string' ? JSON.parse(row.oauth2_token) : row.oauth2_token;
 
         // Create client with stored tokens
-        const { GarminConnect } = await import('garmin-connect');
+        const mod = await import('garmin-connect');
+        const GarminConnect = mod.GarminConnect || mod.default?.GarminConnect;
         const client = new GarminConnect();
         client.loadToken(oauth1, oauth2);
 
