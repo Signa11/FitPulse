@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Timer, Calendar, Zap, ChevronRight, Trash2, Upload, Link2, Unlink, Loader2, Mail, Lock, Eye, EyeOff, Send } from 'lucide-react';
+import { Plus, Timer, Calendar, Zap, ChevronRight, Trash2, Upload, Link2, Unlink, Loader2, Mail, Lock, Eye, EyeOff, Send, ShieldCheck } from 'lucide-react';
 import { useRunLab } from '../context/RunLabContext';
 import { exportWorkoutTCX } from '../services/fitEncoder';
 
@@ -8,13 +8,15 @@ const ACCENT = '#4FACFE';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const { workouts, plans, deleteWorkout, deletePlan, garminStatus, connectGarmin, disconnectGarmin, sendToGarmin } = useRunLab();
+  const { workouts, plans, deleteWorkout, deletePlan, garminStatus, connectGarmin, submitGarminMFA, disconnectGarmin, sendToGarmin } = useRunLab();
   const [showGarminForm, setShowGarminForm] = useState(false);
   const [garminEmail, setGarminEmail] = useState('');
   const [garminPassword, setGarminPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [garminLoading, setGarminLoading] = useState(false);
   const [garminError, setGarminError] = useState('');
+  const [mfaSessionId, setMfaSessionId] = useState(null);
+  const [mfaCode, setMfaCode] = useState('');
   const [sendingId, setSendingId] = useState(null);
   const [sentId, setSentId] = useState(null);
 
@@ -24,12 +26,38 @@ export default function DashboardPage() {
     setGarminLoading(true);
     setGarminError('');
     try {
-      await connectGarmin(garminEmail, garminPassword);
+      const result = await connectGarmin(garminEmail, garminPassword);
+      if (result.mfaRequired) {
+        setMfaSessionId(result.sessionId);
+        setMfaCode('');
+      } else {
+        setShowGarminForm(false);
+        setMfaSessionId(null);
+        setGarminEmail('');
+        setGarminPassword('');
+      }
+    } catch (err) {
+      setGarminError(err.message);
+    } finally {
+      setGarminLoading(false);
+    }
+  };
+
+  const handleMfaSubmit = async (e) => {
+    e.preventDefault();
+    if (!mfaCode) return;
+    setGarminLoading(true);
+    setGarminError('');
+    try {
+      await submitGarminMFA(mfaSessionId, mfaCode);
       setShowGarminForm(false);
+      setMfaSessionId(null);
+      setMfaCode('');
       setGarminEmail('');
       setGarminPassword('');
     } catch (err) {
       setGarminError(err.message);
+      setMfaSessionId(null); // session is consumed, need to restart
     } finally {
       setGarminLoading(false);
     }
@@ -131,54 +159,94 @@ export default function DashboardPage() {
             </button>
           </div>
         ) : showGarminForm ? (
-          <form onSubmit={handleGarminConnect} className="space-y-3">
-            <div className="flex items-center justify-between mb-1">
-              <p className="text-white text-sm font-medium">Connect Garmin Account</p>
-              <button type="button" onClick={() => { setShowGarminForm(false); setGarminError(''); }} className="text-white/30 text-xs hover:text-white/60">Cancel</button>
-            </div>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
-              <input
-                type="email"
-                value={garminEmail}
-                onChange={e => setGarminEmail(e.target.value)}
-                placeholder="Garmin email"
-                className="w-full pl-10 pr-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm placeholder-white/25 focus:outline-none focus:ring-1 focus:ring-white/20"
-                disabled={garminLoading}
-              />
-            </div>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={garminPassword}
-                onChange={e => setGarminPassword(e.target.value)}
-                placeholder="Garmin password"
-                className="w-full pl-10 pr-10 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm placeholder-white/25 focus:outline-none focus:ring-1 focus:ring-white/20"
-                disabled={garminLoading}
-              />
-              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/50">
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          mfaSessionId ? (
+            <form onSubmit={handleMfaSubmit} className="space-y-3">
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-white text-sm font-medium">Verification Code</p>
+                <button type="button" onClick={() => { setShowGarminForm(false); setMfaSessionId(null); setGarminError(''); }} className="text-white/30 text-xs hover:text-white/60">Cancel</button>
+              </div>
+              <p className="text-white/40 text-xs">Check your email for a verification code from Garmin.</p>
+              <div className="relative">
+                <ShieldCheck className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  value={mfaCode}
+                  onChange={e => setMfaCode(e.target.value)}
+                  placeholder="Enter code"
+                  className="w-full pl-10 pr-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm placeholder-white/25 focus:outline-none focus:ring-1 focus:ring-white/20 tracking-widest text-center"
+                  disabled={garminLoading}
+                  autoFocus
+                />
+              </div>
+              {garminError && (
+                <p className="text-red-400 text-xs">{garminError}</p>
+              )}
+              <button
+                type="submit"
+                disabled={garminLoading || !mfaCode}
+                className="w-full py-2.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-50"
+                style={{ background: ACCENT, color: '#000' }}
+              >
+                {garminLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Verifying...
+                  </span>
+                ) : 'Verify'}
               </button>
-            </div>
-            {garminError && (
-              <p className="text-red-400 text-xs">{garminError}</p>
-            )}
-            <p className="text-white/20 text-xs">Your credentials are used once to obtain a token and are not stored.</p>
-            <button
-              type="submit"
-              disabled={garminLoading || !garminEmail || !garminPassword}
-              className="w-full py-2.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-50"
-              style={{ background: ACCENT, color: '#000' }}
-            >
-              {garminLoading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Connecting...
-                </span>
-              ) : 'Connect'}
-            </button>
-          </form>
+            </form>
+          ) : (
+            <form onSubmit={handleGarminConnect} className="space-y-3">
+              <div className="flex items-center justify-between mb-1">
+                <p className="text-white text-sm font-medium">Connect Garmin Account</p>
+                <button type="button" onClick={() => { setShowGarminForm(false); setGarminError(''); }} className="text-white/30 text-xs hover:text-white/60">Cancel</button>
+              </div>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
+                <input
+                  type="email"
+                  value={garminEmail}
+                  onChange={e => setGarminEmail(e.target.value)}
+                  placeholder="Garmin email"
+                  className="w-full pl-10 pr-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm placeholder-white/25 focus:outline-none focus:ring-1 focus:ring-white/20"
+                  disabled={garminLoading}
+                />
+              </div>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/25" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={garminPassword}
+                  onChange={e => setGarminPassword(e.target.value)}
+                  placeholder="Garmin password"
+                  className="w-full pl-10 pr-10 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm placeholder-white/25 focus:outline-none focus:ring-1 focus:ring-white/20"
+                  disabled={garminLoading}
+                />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/50">
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              {garminError && (
+                <p className="text-red-400 text-xs">{garminError}</p>
+              )}
+              <p className="text-white/20 text-xs">Your credentials are used once to obtain a token and are not stored.</p>
+              <button
+                type="submit"
+                disabled={garminLoading || !garminEmail || !garminPassword}
+                className="w-full py-2.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-50"
+                style={{ background: ACCENT, color: '#000' }}
+              >
+                {garminLoading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Connecting...
+                  </span>
+                ) : 'Connect'}
+              </button>
+            </form>
+          )
         ) : (
           <button
             onClick={() => setShowGarminForm(true)}

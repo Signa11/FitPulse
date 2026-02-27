@@ -91,6 +91,14 @@ export function RunLabProvider({ children }) {
   const connectGarmin = useCallback(async (garminEmail, garminPassword) => {
     if (!user?.id) throw new Error('Must be logged in');
     const result = await garminAPI.connectGarmin(user.id, garminEmail, garminPassword);
+    if (result.mfaRequired) return result; // caller handles MFA UI
+    setGarminStatus({ connected: true, displayName: result.displayName, loading: false });
+    return result;
+  }, [user?.id]);
+
+  const submitGarminMFA = useCallback(async (sessionId, mfaCode) => {
+    if (!user?.id) throw new Error('Must be logged in');
+    const result = await garminAPI.submitGarminMFA(user.id, sessionId, mfaCode);
     setGarminStatus({ connected: true, displayName: result.displayName, loading: false });
     return result;
   }, [user?.id]);
@@ -121,6 +129,7 @@ export function RunLabProvider({ children }) {
       getPlan,
       garminStatus,
       connectGarmin,
+      submitGarminMFA,
       disconnectGarmin,
       sendToGarmin,
     }}>

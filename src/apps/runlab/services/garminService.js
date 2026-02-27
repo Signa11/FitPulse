@@ -36,6 +36,13 @@ export async function connectGarmin(userId, garminEmail, garminPassword) {
     });
 }
 
+export async function submitGarminMFA(userId, sessionId, mfaCode) {
+    return garminFetch('/garmin/connect-mfa', {
+        method: 'POST',
+        body: JSON.stringify({ userId, sessionId, mfaCode }),
+    });
+}
+
 export async function disconnectGarmin(userId) {
     return garminFetch('/garmin/disconnect', {
         method: 'POST',

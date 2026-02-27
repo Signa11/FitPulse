@@ -33,6 +33,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/garmin/connect-mfa"
+  to = "/.netlify/functions/garmin-connect-mfa"
+  status = 200
+
+[[redirects]]
   from = "/api/garmin/status"
   to = "/.netlify/functions/garmin-status"
   status = 200
