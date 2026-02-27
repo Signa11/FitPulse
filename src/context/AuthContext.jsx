@@ -90,6 +90,19 @@ export function AuthProvider({ children }) {
         localStorage.setItem('movelab_user', JSON.stringify(updated));
     };
 
+    const logActivity = async (action, target, targetType) => {
+        if (!user?.id) return;
+        try {
+            await fetch('/api/community/feed', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: user.id, action, target, targetType }),
+            });
+        } catch (err) {
+            console.error('Failed to log activity:', err);
+        }
+    };
+
     const updateProfile = async (updates) => {
         if (!user?.id) {
             throw new Error('User not logged in');
@@ -134,6 +147,7 @@ export function AuthProvider({ children }) {
             logout,
             updateUser,
             updateProfile,
+            logActivity,
             isAuthenticated: !!user
         }}>
             {children}

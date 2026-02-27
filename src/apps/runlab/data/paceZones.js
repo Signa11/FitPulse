@@ -117,3 +117,39 @@ function secsToMinSec(totalSecs) {
   const s = Math.round(totalSecs % 60);
   return `${m}:${s.toString().padStart(2, '0')}`;
 }
+
+// ── Preset Pace Zones (quick-pick) ─────────────────────────
+
+const PACE_ZONES_KEY = 'movelab_runlab_paceZones';
+
+export const DEFAULT_PACE_ZONES = [
+  { id: 'easy',      name: 'Easy',      label: 'Easy',      slowPace: '6:30', fastPace: '5:45' },
+  { id: 'tempo',     name: 'Tempo',     label: 'Tempo',     slowPace: '5:15', fastPace: '4:45' },
+  { id: 'threshold', name: 'Threshold', label: 'Threshold', slowPace: '4:45', fastPace: '4:20' },
+  { id: 'vo2max',    name: 'VO2max',    label: 'VO2max',    slowPace: '4:15', fastPace: '3:45' },
+  { id: 'sprint',    name: 'Sprint',    label: 'Sprint',    slowPace: '3:40', fastPace: '3:00' },
+];
+
+export function loadPaceZones() {
+  try {
+    const raw = localStorage.getItem(PACE_ZONES_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch { /* ignore */ }
+  return DEFAULT_PACE_ZONES;
+}
+
+export function savePaceZones(zones) {
+  try {
+    localStorage.setItem(PACE_ZONES_KEY, JSON.stringify(zones));
+  } catch (err) {
+    console.error('Failed to save pace zones', err);
+  }
+}
+
+export function resetPaceZones() {
+  localStorage.removeItem(PACE_ZONES_KEY);
+  return DEFAULT_PACE_ZONES;
+}

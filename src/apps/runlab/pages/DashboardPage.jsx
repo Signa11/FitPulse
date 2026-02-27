@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Timer, Calendar, Zap, ChevronRight, Trash2, Upload, Link2, Unlink, Loader2, Mail, Lock, Eye, EyeOff, Send, ShieldCheck } from 'lucide-react';
+import { Plus, Timer, Calendar, Zap, ChevronRight, Trash2, Upload, Link2, Unlink, Loader2, Mail, Lock, Eye, EyeOff, Send, ShieldCheck, Settings2, RotateCcw } from 'lucide-react';
 import { useRunLab } from '../context/RunLabContext';
 import { exportWorkoutTCX } from '../services/fitEncoder';
+import { loadPaceZones, savePaceZones, resetPaceZones } from '../data/paceZones';
 
 const ACCENT = '#4FACFE';
 
@@ -19,6 +20,8 @@ export default function DashboardPage() {
   const [mfaCode, setMfaCode] = useState('');
   const [sendingId, setSendingId] = useState(null);
   const [sentId, setSentId] = useState(null);
+  const [showZoneSettings, setShowZoneSettings] = useState(false);
+  const [zones, setZones] = useState(() => loadPaceZones());
 
   const handleGarminConnect = async (e) => {
     e.preventDefault();
@@ -261,6 +264,65 @@ export default function DashboardPage() {
             </div>
             <ChevronRight className="w-4 h-4 text-white/20" />
           </button>
+        )}
+      </section>
+
+      {/* Pace Zone Settings */}
+      <section className="bg-[#141416] border border-white/5 rounded-2xl">
+        <button
+          onClick={() => setShowZoneSettings(!showZoneSettings)}
+          className="w-full flex items-center gap-3 px-4 py-3.5"
+        >
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${ACCENT}15` }}>
+            <Settings2 className="w-5 h-5" style={{ color: ACCENT }} />
+          </div>
+          <div className="flex-1 text-left">
+            <p className="text-white text-sm font-medium">Pace Zones</p>
+            <p className="text-white/30 text-xs">Customize quick-pick pace ranges</p>
+          </div>
+          <ChevronRight className={`w-4 h-4 text-white/20 transition-transform ${showZoneSettings ? 'rotate-90' : ''}`} />
+        </button>
+
+        {showZoneSettings && (
+          <div className="px-4 pb-4 space-y-3 border-t border-white/5 pt-3">
+            {zones.map((zone, i) => (
+              <div key={zone.id} className="flex items-center gap-2">
+                <span className="text-white/60 text-xs w-20 truncate">{zone.name}</span>
+                <input
+                  type="text"
+                  value={zone.slowPace}
+                  onChange={e => {
+                    const updated = zones.map((z, j) => j === i ? { ...z, slowPace: e.target.value } : z);
+                    setZones(updated);
+                    savePaceZones(updated);
+                  }}
+                  className="w-16 bg-[#0A0A0B]/50 border border-white/10 text-white text-xs rounded-lg px-2 py-1.5 focus:outline-none focus:border-[#4FACFE]/50 text-center"
+                />
+                <span className="text-white/30 text-xs">to</span>
+                <input
+                  type="text"
+                  value={zone.fastPace}
+                  onChange={e => {
+                    const updated = zones.map((z, j) => j === i ? { ...z, fastPace: e.target.value } : z);
+                    setZones(updated);
+                    savePaceZones(updated);
+                  }}
+                  className="w-16 bg-[#0A0A0B]/50 border border-white/10 text-white text-xs rounded-lg px-2 py-1.5 focus:outline-none focus:border-[#4FACFE]/50 text-center"
+                />
+                <span className="text-white/40 text-xs">/km</span>
+              </div>
+            ))}
+            <button
+              onClick={() => {
+                const defaults = resetPaceZones();
+                setZones(defaults);
+              }}
+              className="flex items-center gap-1.5 text-white/30 hover:text-white/60 text-xs transition-colors mt-2"
+            >
+              <RotateCcw className="w-3 h-3" />
+              Reset to defaults
+            </button>
+          </div>
         )}
       </section>
 

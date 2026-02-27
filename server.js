@@ -74,9 +74,14 @@ const server = createServer(async (req, res) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const pathname = url.pathname;
 
-    // Handle Netlify-style functions (e.g., /api/garmin/*)
-    if (pathname.startsWith('/api/garmin/')) {
-        const funcName = 'garmin-' + pathname.replace('/api/garmin/', '');
+    // Handle Netlify-style functions
+    const netlifyRoutes = [
+        { prefix: '/api/garmin/', funcPrefix: 'garmin-' },
+        { prefix: '/api/community/', funcPrefix: 'community-' },
+    ];
+    const netlifyMatch = netlifyRoutes.find(r => pathname.startsWith(r.prefix));
+    if (netlifyMatch) {
+        const funcName = netlifyMatch.funcPrefix + pathname.replace(netlifyMatch.prefix, '');
         try {
             const funcPath = join(__dirname, 'netlify', 'functions', funcName + '.js');
             const funcUrl = 'file://' + funcPath;

@@ -11,6 +11,7 @@ import {
 } from '../data/models';
 import { paceToSpeed, speedToPace, formatDuration, formatDistance, parseDuration, parseDistance } from '../data/paceZones';
 import { exportWorkoutTCX } from '../services/fitEncoder';
+import PaceZonePicker from '../components/PaceZonePicker';
 
 const ACCENT = '#4FACFE';
 
@@ -287,9 +288,15 @@ export default function IntervalBuilderPage() {
 function StepCard({ step, index, onUpdate, onRemove, onMove, totalSteps, nested = false }) {
   const colors = STEP_COLORS[step.type] || STEP_COLORS[StepType.ACTIVE];
 
-  const [paceStr, setPaceStr] = useState(() => {
+  const [slowPace, setSlowPace] = useState(() => {
     if (step.targetType === TargetType.SPEED && step.targetLow) {
       return speedToPace(step.targetLow);
+    }
+    return '';
+  });
+  const [fastPace, setFastPace] = useState(() => {
+    if (step.targetType === TargetType.SPEED && step.targetHigh) {
+      return speedToPace(step.targetHigh);
     }
     return '';
   });
@@ -302,15 +309,16 @@ function StepCard({ step, index, onUpdate, onRemove, onMove, totalSteps, nested 
     }
   }
 
-  function handlePaceChange(val) {
-    setPaceStr(val);
-    const speed = paceToSpeed(val);
-    if (speed) {
-      // +/- 5% range around target pace
+  function handlePaceChange(slow, fast) {
+    setSlowPace(slow);
+    setFastPace(fast);
+    const slowSpeed = paceToSpeed(slow);
+    const fastSpeed = paceToSpeed(fast);
+    if (slowSpeed || fastSpeed) {
       onUpdate(step.id, {
         targetType: TargetType.SPEED,
-        targetLow: speed * 0.95,
-        targetHigh: speed * 1.05,
+        targetLow: slowSpeed || null,
+        targetHigh: fastSpeed || null,
       });
     }
   }
@@ -325,7 +333,8 @@ function StepCard({ step, index, onUpdate, onRemove, onMove, totalSteps, nested 
 
   function clearTarget() {
     onUpdate(step.id, { targetType: TargetType.NO_TARGET, targetLow: null, targetHigh: null });
-    setPaceStr('');
+    setSlowPace('');
+    setFastPace('');
   }
 
   const durationDisplay = step.durationType === DurationType.TIME
@@ -417,14 +426,14 @@ function StepCard({ step, index, onUpdate, onRemove, onMove, totalSteps, nested 
       </div>
 
       {/* Target row */}
-      <div className="flex items-center gap-2">
+      <div className={`flex ${step.targetType === TargetType.SPEED ? 'flex-col' : 'items-center'} gap-2`}>
         <select
           value={step.targetType}
           onChange={e => {
             if (e.target.value === TargetType.NO_TARGET) clearTarget();
             else onUpdate(step.id, { targetType: e.target.value });
           }}
-          className="bg-[#0A0A0B]/50 border border-white/10 text-white/70 text-xs rounded-lg px-2 py-1.5 focus:outline-none appearance-none"
+          className="bg-[#0A0A0B]/50 border border-white/10 text-white/70 text-xs rounded-lg px-2 py-1.5 focus:outline-none appearance-none w-fit"
         >
           <option value={TargetType.NO_TARGET} className="bg-[#1C1C1E]">No target</option>
           <option value={TargetType.SPEED} className="bg-[#1C1C1E]">Pace</option>
@@ -432,12 +441,10 @@ function StepCard({ step, index, onUpdate, onRemove, onMove, totalSteps, nested 
         </select>
 
         {step.targetType === TargetType.SPEED && (
-          <input
-            type="text"
-            placeholder="mm:ss /km"
-            value={paceStr}
-            onChange={e => handlePaceChange(e.target.value)}
-            className="flex-1 bg-[#0A0A0B]/50 border border-white/10 text-white text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#4FACFE]/50 placeholder:text-white/25"
+          <PaceZonePicker
+            slowPace={slowPace}
+            fastPace={fastPace}
+            onPaceChange={handlePaceChange}
           />
         )}
 

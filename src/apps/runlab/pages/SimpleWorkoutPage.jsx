@@ -5,6 +5,7 @@ import { useRunLab } from '../context/RunLabContext';
 import { createWorkout, createStep, StepType, DurationType, TargetType } from '../data/models';
 import { paceToSpeed, parseDuration, parseDistance } from '../data/paceZones';
 import { exportWorkoutTCX } from '../services/fitEncoder';
+import PaceZonePicker from '../components/PaceZonePicker';
 
 const ACCENT = '#4FACFE';
 
@@ -16,7 +17,8 @@ export default function SimpleWorkoutPage() {
   const [mode, setMode] = useState('distance'); // 'distance' | 'time'
   const [distance, setDistance] = useState('');   // e.g. "5 km" or "5000"
   const [time, setTime] = useState('');           // e.g. "30:00"
-  const [pace, setPace] = useState('');           // e.g. "5:30"
+  const [slowPace, setSlowPace] = useState('');   // e.g. "6:30"
+  const [fastPace, setFastPace] = useState('');   // e.g. "5:45"
   const [saved, setSaved] = useState(false);
   const [garminSending, setGarminSending] = useState(false);
   const [garminSent, setGarminSent] = useState(false);
@@ -44,13 +46,13 @@ export default function SimpleWorkoutPage() {
     }
 
     // Optional pace target
-    if (pace) {
-      const speed = paceToSpeed(pace);
-      if (speed) {
-        mainStep.targetType = TargetType.SPEED;
-        mainStep.targetLow = speed * 0.95;
-        mainStep.targetHigh = speed * 1.05;
-      }
+    const slowSpeed = paceToSpeed(slowPace);
+    const fastSpeed = paceToSpeed(fastPace);
+    if (slowSpeed || fastSpeed) {
+      mainStep.targetType = TargetType.SPEED;
+      // slow pace = lower speed (targetLow), fast pace = higher speed (targetHigh)
+      mainStep.targetLow = slowSpeed || (fastSpeed ? fastSpeed * 0.95 : null);
+      mainStep.targetHigh = fastSpeed || (slowSpeed ? slowSpeed * 1.05 : null);
     }
 
     steps.push(createStep(mainStep));
@@ -174,12 +176,10 @@ export default function SimpleWorkoutPage() {
       {/* Pace target */}
       <div>
         <label className="block text-xs text-white/40 mb-1.5 uppercase tracking-wider">Target Pace (optional)</label>
-        <input
-          type="text"
-          value={pace}
-          onChange={e => setPace(e.target.value)}
-          placeholder="mm:ss per km e.g. 5:30"
-          className="w-full bg-[#141416] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/25 focus:outline-none focus:border-[#4FACFE]/50 transition-colors"
+        <PaceZonePicker
+          slowPace={slowPace}
+          fastPace={fastPace}
+          onPaceChange={(slow, fast) => { setSlowPace(slow); setFastPace(fast); }}
         />
       </div>
 
@@ -197,7 +197,7 @@ export default function SimpleWorkoutPage() {
             <span className="text-white/70 text-sm">Run</span>
             <span className="text-white/30 text-xs ml-auto">
               {mode === 'distance' ? (distance || '---') : (time || '---')}
-              {pace ? ` @ ${pace}/km` : ''}
+              {slowPace && fastPace ? ` @ ${slowPace}–${fastPace}/km` : slowPace ? ` @ ${slowPace}/km` : fastPace ? ` @ ${fastPace}/km` : ''}
             </span>
           </div>
           <div className="flex items-center gap-3 px-4 py-2.5">

@@ -52,6 +52,16 @@
   to = "/.netlify/functions/garmin-disconnect"
   status = 200
 
+[[redirects]]
+  from = "/api/community/members"
+  to = "/.netlify/functions/community-members"
+  status = 200
+
+[[redirects]]
+  from = "/api/community/feed"
+  to = "/.netlify/functions/community-feed"
+  status = 200
+
 # SPA fallback - all non-API routes go to index.html
 [[redirects]]
   from = "/*"

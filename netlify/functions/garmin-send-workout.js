@@ -55,7 +55,7 @@ export const handler = async (event) => {
         // Create client with stored tokens
         const mod = await import('@gooin/garmin-connect');
         const GarminConnect = mod.GarminConnect || mod.default?.GarminConnect;
-        const client = new GarminConnect();
+        const client = new GarminConnect({ username: 'token-auth', password: 'token-auth' });
         client.loadToken(oauth1, oauth2);
 
         // Convert workout to Garmin format
