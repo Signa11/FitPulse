@@ -76,6 +76,9 @@ export function createPlan(overrides = {}) {
     raceType: '10k',         // 5k | 10k | half | marathon
     goalTime: '',             // e.g. "50:00"
     weeks: [],                // array of { weekNumber, phase, days: [{day,workoutId}] }
+    vdot: null,               // calculated VDOT score
+    startDate: null,          // ISO date string (Monday of week 1)
+    runsPerWeek: 4,           // 3-6
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     ...overrides,

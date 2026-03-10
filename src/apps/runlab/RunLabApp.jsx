@@ -6,6 +6,7 @@ import { RunLabProvider } from './context/RunLabContext';
 import DashboardPage from './pages/DashboardPage';
 import IntervalBuilderPage from './pages/IntervalBuilderPage';
 import PlanBuilderPage from './pages/PlanBuilderPage';
+import PlanViewPage from './pages/PlanViewPage';
 import SimpleWorkoutPage from './pages/SimpleWorkoutPage';
 
 const NAV_ITEMS = [
@@ -26,6 +27,7 @@ export default function RunLabApp() {
           <Route path="interval" element={<IntervalBuilderPage />} />
           <Route path="interval/:id" element={<IntervalBuilderPage />} />
           <Route path="plan" element={<PlanBuilderPage />} />
+          <Route path="plan/:id" element={<PlanViewPage />} />
           <Route path="simple" element={<SimpleWorkoutPage />} />
         </Routes>
       </AppShell>

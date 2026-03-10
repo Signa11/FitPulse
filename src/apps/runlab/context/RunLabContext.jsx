@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import * as garminAPI from '../services/garminService';
+import * as stravaAPI from '../services/stravaService';
 
 const RunLabContext = createContext(null);
 
@@ -30,6 +31,7 @@ export function RunLabProvider({ children }) {
   const [workouts, setWorkouts] = useState(() => loadJSON(WORKOUTS_KEY));
   const [plans, setPlans] = useState(() => loadJSON(PLANS_KEY));
   const [garminStatus, setGarminStatus] = useState({ connected: false, displayName: null, loading: true });
+  const [stravaStatus, setStravaStatus] = useState({ connected: false, athleteName: null, loading: true });
 
   // Persist on change
   useEffect(() => { saveJSON(WORKOUTS_KEY, workouts); }, [workouts]);
@@ -44,6 +46,17 @@ export function RunLabProvider({ children }) {
     garminAPI.checkGarminStatus(user.id)
       .then(data => setGarminStatus({ connected: data.connected, displayName: data.displayName || null, loading: false }))
       .catch(() => setGarminStatus({ connected: false, displayName: null, loading: false }));
+  }, [user?.id]);
+
+  // Check Strava connection status on mount
+  useEffect(() => {
+    if (!user?.id) {
+      setStravaStatus({ connected: false, athleteName: null, loading: false });
+      return;
+    }
+    stravaAPI.checkStravaStatus(user.id)
+      .then(data => setStravaStatus({ connected: data.connected, athleteName: data.athleteName || null, loading: false }))
+      .catch(() => setStravaStatus({ connected: false, athleteName: null, loading: false }));
   }, [user?.id]);
 
   // ── Workout CRUD ───────────────────────────────────────────
@@ -115,6 +128,25 @@ export function RunLabProvider({ children }) {
     return result;
   }, [user?.id]);
 
+  // ── Strava Integration ─────────────────────────────────────
+
+  const connectStrava = useCallback(async () => {
+    if (!user?.id) throw new Error('Must be logged in');
+    const { authUrl } = await stravaAPI.getStravaAuthUrl(user.id);
+    window.location.href = authUrl;
+  }, [user?.id]);
+
+  const disconnectStrava = useCallback(async () => {
+    if (!user?.id) return;
+    await stravaAPI.disconnectStrava(user.id);
+    setStravaStatus({ connected: false, athleteName: null, loading: false });
+  }, [user?.id]);
+
+  const getStravaActivities = useCallback(async (after) => {
+    if (!user?.id) throw new Error('Must be logged in');
+    return stravaAPI.getStravaActivities(user.id, after);
+  }, [user?.id]);
+
   return (
     <RunLabContext.Provider value={{
       workouts,
@@ -132,6 +164,10 @@ export function RunLabProvider({ children }) {
       submitGarminMFA,
       disconnectGarmin,
       sendToGarmin,
+      stravaStatus,
+      connectStrava,
+      disconnectStrava,
+      getStravaActivities,
     }}>
       {children}
     </RunLabContext.Provider>

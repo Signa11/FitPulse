@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, Calendar, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Save, Calendar, ChevronRight, Zap } from 'lucide-react';
 import { useRunLab } from '../context/RunLabContext';
 import { createPlan } from '../data/models';
 import {
   RACE_TYPES, getTemplatesForRace,
   instantiateTemplate, createBlankPlanWeeks,
 } from '../data/planTemplates';
+import { generateSmartPlan } from '../data/planGenerator';
+import { RACE_DISTANCES, parseTime, formatTime, predictRaceTime } from '../data/vdot';
+import { calculateVDOT } from '../data/vdot';
 
 const ACCENT = '#4FACFE';
 const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -27,13 +30,35 @@ const WEEK_COUNT_OPTIONS = {
 
 export default function PlanBuilderPage() {
   const navigate = useNavigate();
-  const { addPlan } = useRunLab();
+  const { addPlan, addWorkout } = useRunLab();
 
-  const [step, setStep] = useState('setup'); // 'setup' | 'edit'
+  const [step, setStep] = useState('setup'); // 'setup' | 'smart' | 'edit'
   const [raceType, setRaceType] = useState('10k');
   const [goalTime, setGoalTime] = useState('');
   const [plan, setPlan] = useState(null);
   const [saved, setSaved] = useState(false);
+
+  // Smart plan fields
+  const [recentRaceDistance, setRecentRaceDistance] = useState('10k');
+  const [recentRaceTime, setRecentRaceTime] = useState('');
+  const [runsPerWeek, setRunsPerWeek] = useState(4);
+  const [startDate, setStartDate] = useState(() => {
+    const d = new Date();
+    const dayOfWeek = d.getDay();
+    const mondayOffset = dayOfWeek === 0 ? 1 : (8 - dayOfWeek);
+    d.setDate(d.getDate() + mondayOffset);
+    return d.toISOString().split('T')[0];
+  });
+  const [generating, setGenerating] = useState(false);
+
+  // Live VDOT preview
+  const recentTimeSecs = parseTime(recentRaceTime);
+  const liveVDOT = recentTimeSecs
+    ? calculateVDOT(RACE_DISTANCES[recentRaceDistance] || 10000, recentTimeSecs)
+    : null;
+  const predictedGoal = liveVDOT
+    ? formatTime(predictRaceTime(liveVDOT, RACE_DISTANCES[raceType] || 10000))
+    : null;
 
   // ── Setup phase ────────────────────────────────────────────
 
@@ -48,7 +73,7 @@ export default function PlanBuilderPage() {
 
   function handleStartBlank() {
     const weekCounts = WEEK_COUNT_OPTIONS[raceType] || [8];
-    const weekCount = weekCounts[Math.floor(weekCounts.length / 2)]; // pick middle
+    const weekCount = weekCounts[Math.floor(weekCounts.length / 2)];
     const p = createPlan({
       name: `${RACE_TYPES.find(r => r.value === raceType)?.label || raceType} Plan`,
       raceType,
@@ -57,6 +82,32 @@ export default function PlanBuilderPage() {
     });
     setPlan(p);
     setStep('edit');
+  }
+
+  function handleGenerateSmartPlan() {
+    if (!recentTimeSecs) return;
+    setGenerating(true);
+
+    // Use requestAnimationFrame to let the UI update before heavy computation
+    requestAnimationFrame(() => {
+      const { plan: newPlan, workouts } = generateSmartPlan({
+        raceType,
+        goalTime,
+        recentRaceDistance,
+        recentRaceTime: recentTimeSecs,
+        runsPerWeek,
+        startDate,
+      });
+
+      // Store all generated workouts
+      for (const w of workouts) {
+        addWorkout(w);
+      }
+      addPlan(newPlan);
+
+      setGenerating(false);
+      navigate(`/runlab/plan/${newPlan.id}`);
+    });
   }
 
   // ── Edit phase helpers ─────────────────────────────────────
@@ -97,6 +148,133 @@ export default function PlanBuilderPage() {
     setTimeout(() => {
       navigate('/runlab');
     }, 1200);
+  }
+
+  // ── Smart Plan setup view ─────────────────────────────────
+
+  if (step === 'smart') {
+    return (
+      <div className="px-4 space-y-6">
+        <div className="flex items-center gap-3">
+          <button onClick={() => setStep('setup')} className="p-2 -ml-2 rounded-xl hover:bg-white/5 transition-colors">
+            <ArrowLeft className="w-5 h-5 text-white/50" />
+          </button>
+          <h1 className="text-xl font-bold text-white">Smart Plan (VDOT)</h1>
+        </div>
+
+        {/* Race type (already selected) */}
+        <div className="bg-[#141416] border border-white/5 rounded-xl px-4 py-3 flex items-center justify-between">
+          <span className="text-white/40 text-xs uppercase">Goal Race</span>
+          <span className="text-white text-sm font-medium">
+            {RACE_TYPES.find(r => r.value === raceType)?.label || raceType}
+          </span>
+        </div>
+
+        {/* Recent race */}
+        <div>
+          <label className="block text-xs text-white/40 mb-2 uppercase tracking-wider">Your Recent Race Result</label>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-[10px] text-white/30 mb-1">Distance</label>
+              <select
+                value={recentRaceDistance}
+                onChange={e => setRecentRaceDistance(e.target.value)}
+                className="w-full bg-[#141416] border border-white/10 rounded-xl px-3 py-3 text-white text-sm focus:outline-none focus:border-[#4FACFE]/50"
+              >
+                {RACE_TYPES.map(r => (
+                  <option key={r.value} value={r.value}>{r.label}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-[10px] text-white/30 mb-1">Finish Time</label>
+              <input
+                type="text"
+                value={recentRaceTime}
+                onChange={e => setRecentRaceTime(e.target.value)}
+                placeholder="mm:ss or h:mm:ss"
+                className="w-full bg-[#141416] border border-white/10 rounded-xl px-3 py-3 text-white text-sm placeholder:text-white/25 focus:outline-none focus:border-[#4FACFE]/50"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* VDOT preview */}
+        {liveVDOT && (
+          <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl px-4 py-3">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-white/50 text-xs">Your VDOT</span>
+              <span className="text-2xl font-bold text-white">{liveVDOT}</span>
+            </div>
+            {predictedGoal && (
+              <p className="text-white/40 text-xs">
+                Predicted {RACE_TYPES.find(r => r.value === raceType)?.label}: <span className="text-white/70 font-medium">{predictedGoal}</span>
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Runs per week */}
+        <div>
+          <label className="block text-xs text-white/40 mb-2 uppercase tracking-wider">Runs Per Week</label>
+          <div className="grid grid-cols-4 gap-2">
+            {[3, 4, 5, 6].map(n => (
+              <button
+                key={n}
+                onClick={() => setRunsPerWeek(n)}
+                className={`py-3 rounded-xl text-sm font-medium transition-all ${
+                  runsPerWeek === n
+                    ? 'text-black'
+                    : 'bg-[#141416] border border-white/10 text-white/60 hover:border-white/20'
+                }`}
+                style={runsPerWeek === n ? { background: ACCENT } : {}}
+              >
+                {n}x
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Start date */}
+        <div>
+          <label className="block text-xs text-white/40 mb-1.5 uppercase tracking-wider">Start Date (Monday)</label>
+          <input
+            type="date"
+            value={startDate}
+            onChange={e => setStartDate(e.target.value)}
+            className="w-full bg-[#141416] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#4FACFE]/50 transition-colors"
+          />
+        </div>
+
+        {/* Goal time override */}
+        <div>
+          <label className="block text-xs text-white/40 mb-1.5 uppercase tracking-wider">Goal Time (optional override)</label>
+          <input
+            type="text"
+            value={goalTime}
+            onChange={e => setGoalTime(e.target.value)}
+            placeholder={predictedGoal ? `Predicted: ${predictedGoal}` : 'e.g. 50:00'}
+            className="w-full bg-[#141416] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/25 focus:outline-none focus:border-[#4FACFE]/50 transition-colors"
+          />
+        </div>
+
+        {/* Generate */}
+        <div className="pb-4">
+          <button
+            onClick={handleGenerateSmartPlan}
+            disabled={!recentTimeSecs || generating}
+            className="w-full flex items-center justify-center gap-2 rounded-xl py-3.5 font-semibold text-sm transition-all active:scale-[0.97] disabled:opacity-40"
+            style={{ background: 'linear-gradient(135deg, #4FACFE, #00F2FE)', color: '#000' }}
+          >
+            <Zap className="w-4 h-4" />
+            {generating ? 'Generating Plan...' : 'Generate Smart Plan'}
+          </button>
+          {!recentTimeSecs && recentRaceTime && (
+            <p className="text-red-400/70 text-xs mt-2 text-center">Enter a valid time (e.g. 25:00 or 1:45:00)</p>
+          )}
+        </div>
+      </div>
+    );
   }
 
   // ── Setup view ─────────────────────────────────────────────
@@ -144,9 +322,24 @@ export default function PlanBuilderPage() {
           />
         </div>
 
-        {/* Template or blank */}
+        {/* Start From */}
         <div>
           <label className="block text-xs text-white/40 mb-2 uppercase tracking-wider">Start From</label>
+
+          {/* Smart Plan — featured option */}
+          <button
+            onClick={() => setStep('smart')}
+            className="w-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-xl px-4 py-4 flex items-center gap-3 hover:border-blue-500/40 transition-all text-left mb-3"
+          >
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #4FACFE, #00F2FE)' }}>
+              <Zap className="w-5 h-5 text-black" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-white text-sm font-semibold">Smart Plan (VDOT)</p>
+              <p className="text-white/40 text-xs">Auto-generate from your race time with optimal paces</p>
+            </div>
+            <ChevronRight className="w-4 h-4 text-white/30" />
+          </button>
 
           {templates.length > 0 && (
             <div className="space-y-2 mb-3">

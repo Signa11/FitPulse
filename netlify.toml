@@ -53,6 +53,31 @@
   status = 200
 
 [[redirects]]
+  from = "/api/strava/connect"
+  to = "/.netlify/functions/strava-connect"
+  status = 200
+
+[[redirects]]
+  from = "/api/strava/callback"
+  to = "/.netlify/functions/strava-callback"
+  status = 200
+
+[[redirects]]
+  from = "/api/strava/status"
+  to = "/.netlify/functions/strava-status"
+  status = 200
+
+[[redirects]]
+  from = "/api/strava/disconnect"
+  to = "/.netlify/functions/strava-disconnect"
+  status = 200
+
+[[redirects]]
+  from = "/api/strava/activities"
+  to = "/.netlify/functions/strava-activities"
+  status = 200
+
+[[redirects]]
   from = "/api/community/members"
   to = "/.netlify/functions/community-members"
   status = 200

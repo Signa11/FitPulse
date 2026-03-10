@@ -77,6 +77,7 @@ const server = createServer(async (req, res) => {
     // Handle Netlify-style functions
     const netlifyRoutes = [
         { prefix: '/api/garmin/', funcPrefix: 'garmin-' },
+        { prefix: '/api/strava/', funcPrefix: 'strava-' },
         { prefix: '/api/community/', funcPrefix: 'community-' },
     ];
     const netlifyMatch = netlifyRoutes.find(r => pathname.startsWith(r.prefix));

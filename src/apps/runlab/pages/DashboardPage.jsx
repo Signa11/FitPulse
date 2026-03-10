@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Timer, Calendar, Zap, ChevronRight, Trash2, Upload, Link2, Unlink, Loader2, Mail, Lock, Eye, EyeOff, Send, ShieldCheck, Settings2, RotateCcw } from 'lucide-react';
+import { Plus, Timer, Calendar, Zap, ChevronRight, Trash2, Upload, Link2, Unlink, Loader2, Mail, Lock, Eye, EyeOff, Send, ShieldCheck, Settings2, RotateCcw, Activity } from 'lucide-react';
 import { useRunLab } from '../context/RunLabContext';
 import { exportWorkoutTCX } from '../services/fitEncoder';
 import { loadPaceZones, savePaceZones, resetPaceZones } from '../data/paceZones';
@@ -9,7 +9,7 @@ const ACCENT = '#4FACFE';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
-  const { workouts, plans, deleteWorkout, deletePlan, garminStatus, connectGarmin, submitGarminMFA, disconnectGarmin, sendToGarmin } = useRunLab();
+  const { workouts, plans, deleteWorkout, deletePlan, garminStatus, connectGarmin, submitGarminMFA, disconnectGarmin, sendToGarmin, stravaStatus, connectStrava, disconnectStrava } = useRunLab();
   const [showGarminForm, setShowGarminForm] = useState(false);
   const [garminEmail, setGarminEmail] = useState('');
   const [garminPassword, setGarminPassword] = useState('');
@@ -267,6 +267,47 @@ export default function DashboardPage() {
         )}
       </section>
 
+      {/* Strava Connection */}
+      <section className="bg-[#141416] border border-white/5 rounded-2xl p-4">
+        {stravaStatus.loading ? (
+          <div className="flex items-center gap-3 text-white/40 text-sm">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            Checking Strava connection...
+          </div>
+        ) : stravaStatus.connected ? (
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-orange-500/15 flex items-center justify-center">
+              <Activity className="w-5 h-5 text-orange-400" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-white text-sm font-medium">Strava Connected</p>
+              <p className="text-white/40 text-xs truncate">{stravaStatus.athleteName}</p>
+            </div>
+            <button
+              onClick={disconnectStrava}
+              className="p-2 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-400/10 transition-colors"
+              title="Disconnect Strava"
+            >
+              <Unlink className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={connectStrava}
+            className="w-full flex items-center gap-3"
+          >
+            <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center">
+              <Activity className="w-5 h-5 text-orange-400" />
+            </div>
+            <div className="flex-1 text-left">
+              <p className="text-white text-sm font-medium">Connect Strava</p>
+              <p className="text-white/30 text-xs">Sync runs for adaptive training</p>
+            </div>
+            <ChevronRight className="w-4 h-4 text-white/20" />
+          </button>
+        )}
+      </section>
+
       {/* Pace Zone Settings */}
       <section className="bg-[#141416] border border-white/5 rounded-2xl">
         <button
@@ -393,19 +434,24 @@ export default function DashboardPage() {
                 key={p.id}
                 className="bg-[#141416] border border-white/5 rounded-2xl px-4 py-3 flex items-center gap-3 group"
               >
-                <div className="flex-1 min-w-0">
+                <button
+                  onClick={() => navigate(`/runlab/plan/${p.id}`)}
+                  className="flex-1 text-left min-w-0"
+                >
                   <p className="text-white font-medium text-sm truncate">{p.name}</p>
                   <p className="text-white/40 text-xs mt-0.5">
                     {p.weeks?.length || 0} week{(p.weeks?.length || 0) !== 1 ? 's' : ''}
                     {p.raceType ? ` · ${p.raceType.toUpperCase()}` : ''}
+                    {p.vdot ? ` · VDOT ${p.vdot}` : ''}
                   </p>
-                </div>
+                </button>
                 <button
                   onClick={() => deletePlan(p.id)}
                   className="p-2 rounded-lg text-white/20 hover:text-red-400 hover:bg-red-400/10 transition-colors opacity-0 group-hover:opacity-100"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
+                <ChevronRight className="w-4 h-4 text-white/20" />
               </div>
             ))}
           </div>
